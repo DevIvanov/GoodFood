@@ -1,4 +1,4 @@
-package com.juniorteam.football.ui
+package com.juniorteam.football.ui.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -13,5 +13,4 @@ interface CarsApi {
     @Headers(HEADER)
     @GET(GET_CARS)
     fun getCars(): Single<List<CarEntity>>
-
 }
