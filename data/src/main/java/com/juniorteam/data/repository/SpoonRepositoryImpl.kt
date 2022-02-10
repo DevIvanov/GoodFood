@@ -1,11 +1,11 @@
 package com.juniorteam.data.repository
 
-import com.juniorteam.data.source.remote.api.CarsApi
-import com.juniorteam.domain.repository.VehicleRepository
+import com.juniorteam.data.source.remote.api.SpoonApi
+import com.juniorteam.domain.repository.SpoonRepository
 import javax.inject.Inject
 
 
-class VehicleRepositoryImpl @Inject constructor(private val carsApi: CarsApi): VehicleRepository {
+class SpoonRepositoryImpl @Inject constructor(private val api: SpoonApi): SpoonRepository {
 
 //    override suspend fun fetchCarList(): Result<List<Car>> {
 //        return safeApiCall { carsApi.getCars().mapToCarsList() }

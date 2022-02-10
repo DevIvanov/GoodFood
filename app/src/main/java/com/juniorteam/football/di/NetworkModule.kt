@@ -4,7 +4,7 @@ package com.juniorteam.football.di
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import android.content.Context
 import com.juniorteam.data.constants.ApiConstants
-import com.juniorteam.data.source.remote.api.CarsApi
+import com.juniorteam.data.source.remote.api.SpoonApi
 import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
@@ -36,6 +36,6 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideCarsApi(vehicleRetrofit: Retrofit): CarsApi =
-        vehicleRetrofit.create(CarsApi::class.java)
+    fun provideSpoonApi(spoonRetrofit: Retrofit): SpoonApi =
+        spoonRetrofit.create(SpoonApi::class.java)
 }

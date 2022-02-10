@@ -8,14 +8,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
-import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -35,10 +32,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.juniorteam.domain.model.Car
+import androidx.paging.PagingData
+import com.juniorteam.domain.model.Recipe
+import com.juniorteam.domain.model.result.toSuccess
 import com.juniorteam.football.R
 import com.juniorteam.football.databinding.FragmentSplashBinding
-import com.juniorteam.football.ui.screens.viewmodel.CarViewModel
 import com.juniorteam.football.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,9 +44,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val tag = MainActivity::class.java.simpleName
-    private val carViewModel: CarViewModel by viewModels()
+    private val recipesViewModel: RecipesViewModel by viewModels()
 
-    private val carList = mutableStateListOf<Car>()
+    private val recipesList = mutableStateListOf<Recipe>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,21 +58,21 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        carViewModel.getCarList()
+        recipesViewModel.getRecipeList("potato")
         setupObserver()
     }
 
     private fun setupObserver() {
-        carViewModel.carList.observe(this, Observer { cars ->
-            carList.clear()
-            carList.addAll(cars)
+        recipesViewModel.recipeList.observe(this, Observer { recipes ->
+            recipesList.clear()
+            recipesList.addAll(recipes as List<Recipe>)
             Log.v(tag, "Success!")
-            Log.v(tag, cars.toString())
+            Log.v(tag, recipes.toString())
         })
     }
 
     @Composable
-    fun AllCars(carList: List<Car>, navController: NavController) {
+    fun AllRecipes(list: List<Recipe>, navController: NavController) {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -86,7 +84,7 @@ class MainActivity : ComponentActivity() {
             Button(onClick = { navController.navigate("friendslist") }) {
                 Text(text = "Navigate next")
             }
-            if (carList.isEmpty()){
+            if (recipesList.isEmpty()){
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
@@ -113,8 +111,8 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
-                    items(carList) { plant ->
-                        PlantCard(plant.make!!, plant.model!!, R.drawable.ic_android)
+                    items(recipesList) { recipe ->
+                        PlantCard(recipe.image!!, recipe.title!!, R.drawable.ic_android)
                     }
                 }
             }
@@ -135,6 +133,7 @@ class MainActivity : ComponentActivity() {
         val items = listOf(
             Screen.Profile,
             Screen.FriendsList,
+            Screen.FoodList
         )
         val navController = rememberNavController()
         Scaffold(
@@ -144,7 +143,7 @@ class MainActivity : ComponentActivity() {
                     val currentDestination = navBackStackEntry?.destination
                     items.forEach { screen ->
                         BottomNavigationItem(
-                            icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
+                            icon = { Icon(painterResource(screen.iconId), contentDescription = null) },
                             label = { Text(stringResource(screen.resourceId)) },
                             selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                             onClick = {
@@ -169,14 +168,15 @@ class MainActivity : ComponentActivity() {
         ) { innerPadding ->
             NavHost(navController, startDestination = Screen.Profile.route, Modifier.padding(innerPadding)) {
                 composable(Screen.Profile.route) { Profile(navController) }
-                composable(Screen.FriendsList.route) { FriendsList(navController) }
+                composable(Screen.FriendsList.route) { FriendsList(navController)}
+                composable(Screen.FoodList.route){ FoodList(navController) }
             }
         }
     }
 
     @Composable
     fun Profile(navController: NavController) {
-        AllCars(carList = carList, navController)
+        AllRecipes(list = recipesList, navController)
     }
 
 
@@ -187,11 +187,18 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Composable
+    fun FoodList(navController: NavController) {
+        Button(onClick = { navController.navigate("friendsList") }) {
+            Text(text = "Navigate next 3")
+        }
+    }
 }
 
-sealed class Screen(val route: String, @StringRes val resourceId: Int) {
-    object Profile : Screen("profile", R.string.profile)
-    object FriendsList : Screen("friendslist", R.string.friendsList)
+sealed class Screen(val route: String, @StringRes val resourceId: Int, val iconId: Int) {
+    object Profile : Screen("profile", R.string.profile, R.drawable.ic_android)
+    object FriendsList : Screen("friendslist", R.string.friendsList, R.drawable.ic_fastfood)
+    object FoodList : Screen("foodlist", R.string.foodList, R.drawable.ic_fitness_center)
 }
 
 @Composable

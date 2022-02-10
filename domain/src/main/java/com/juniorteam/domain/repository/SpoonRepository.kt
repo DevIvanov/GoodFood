@@ -1,5 +1,5 @@
 package com.juniorteam.domain.repository
 
-interface VehicleRepository {
+interface SpoonRepository {
 //    suspend fun fetchCarList(): Result<List<Car>>
 }

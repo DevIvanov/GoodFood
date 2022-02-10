@@ -37,6 +37,9 @@ android {
 dependencies {
     implementation project(':domain')
 
+    // Paging 3
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
     // Retrofit2 + GSON
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"

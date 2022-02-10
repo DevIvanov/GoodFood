@@ -5,4 +5,5 @@
 
     <string name="profile">Profile</string>
     <string name="friendsList">FriendsList</string>
+    <string name="foodList">foodList</string>
 </resources>

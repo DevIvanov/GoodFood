@@ -1,7 +1,7 @@
 package com.juniorteam.football.di
 
-import com.juniorteam.data.repository.VehicleRepositoryImpl
-import com.juniorteam.data.source.remote.api.CarsApi
+import com.juniorteam.data.repository.SpoonRepositoryImpl
+import com.juniorteam.data.source.remote.api.SpoonApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,9 +12,9 @@ import dagger.hilt.components.SingletonComponent
 object AppModule {
 
     @Provides
-    fun provideVehicleRepositoryImpl(
-        carsApi: CarsApi
-    ): VehicleRepositoryImpl {
-        return VehicleRepositoryImpl(carsApi)
+    fun provideSpoonRepositoryImpl(
+        api: SpoonApi
+    ): SpoonRepositoryImpl {
+        return SpoonRepositoryImpl(api)
     }
 }
