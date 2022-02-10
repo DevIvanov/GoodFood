@@ -18,7 +18,9 @@ class CarViewModel @Inject constructor(
 
     private val tag = CarViewModel::class.java.simpleName
 
-    val carList = MutableLiveData<List<Car>>()
+    val carList = MutableLiveData<List<Car>>().apply {
+        value = emptyList()
+    }
 
     fun getCarList() {
 

@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -55,10 +56,7 @@ class MainActivity : ComponentActivity() {
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-//                    Greeting("Android")
-//                    Fragment()
-//                    Navigation()
-                    AllCars(carList = carList)
+                    Navigation()
                 }
             }
         }
@@ -66,9 +64,8 @@ class MainActivity : ComponentActivity() {
         setupObserver()
     }
 
-
     private fun setupObserver() {
-        carViewModel.carList.observe(this, Observer { cars->
+        carViewModel.carList.observe(this, Observer { cars ->
             carList.clear()
             carList.addAll(cars)
             Log.v(tag, "Success!")
@@ -77,7 +74,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun AllCars(carList: List<Car>) {
+    fun AllCars(carList: List<Car>, navController: NavController) {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -86,60 +83,52 @@ class MainActivity : ComponentActivity() {
                 )
             }
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp)
-            ) {
-                item {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(vertical = 25.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            "\uD83C\uDF3F  Plants in Cosmetics",
-                            style = MaterialTheme.typography.h3
-                        )
-                    }
+            Button(onClick = { navController.navigate("friendslist") }) {
+                Text(text = "Navigate next")
+            }
+            if (carList.isEmpty()){
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+                    CircularProgressIndicator()
                 }
-                items(carList) { plant ->
-                    PlantCard(plant.make!!, plant.model!!, R.drawable.ic_android)
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(vertical = 25.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "\uD83C\uDF3F  Plants in Cosmetics",
+                                style = MaterialTheme.typography.h3
+                            )
+                        }
+                    }
+                    items(carList) { plant ->
+                        PlantCard(plant.make!!, plant.model!!, R.drawable.ic_android)
+                    }
                 }
             }
         }
-    }
-
-    @Composable
-    fun Greeting(name: String) {
-        Text(text = "Hello $name!")
     }
 
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
         MyApplicationTheme {
-//            Greeting("Android")
-//            Fragment()
-//            Navigation()
+            Navigation()
         }
     }
 
-    @Composable
-    fun Fragment() {
-        AndroidView(
-            modifier =
-            Modifier
-                .fillMaxHeight()
-                .fillMaxWidth(),
-            factory = { context ->
-                FrameLayout(context).apply {
-                    FragmentSplashBinding.inflate(LayoutInflater.from(context), this, true).root
-                }
-            })
-    }
 
     @Composable
     fun Navigation() {
@@ -187,9 +176,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun Profile(navController: NavController) {
-        Button(onClick = { navController.navigate("friendslist") }) {
-            Text(text = "Navigate next")
-        }
+        AllCars(carList = carList, navController)
     }
 
 
@@ -241,5 +228,20 @@ fun PlantCard(name: String, description: String, image: Int) {
                 )
             }
         }
+    }
+
+
+    @Composable
+    fun Fragment() {
+        AndroidView(
+            modifier =
+            Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(),
+            factory = { context ->
+                FrameLayout(context).apply {
+                    FragmentSplashBinding.inflate(LayoutInflater.from(context), this, true).root
+                }
+            })
     }
 }
