@@ -1,9 +1,10 @@
 package com.juniorteam.football.ui
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -12,19 +13,21 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -32,13 +35,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Recipe
-import com.juniorteam.domain.model.result.toSuccess
 import com.juniorteam.football.R
 import com.juniorteam.football.databinding.FragmentSplashBinding
 import com.juniorteam.football.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -58,66 +66,66 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        recipesViewModel.getRecipeList("potato")
-        setupObserver()
+//        recipesViewModel.getRecipeList("potato")
+//        setupObserver()
     }
 
-    private fun setupObserver() {
-        recipesViewModel.recipeList.observe(this, Observer { recipes ->
-            recipesList.clear()
-            recipesList.addAll(recipes as List<Recipe>)
-            Log.v(tag, "Success!")
-            Log.v(tag, recipes.toString())
-        })
-    }
+//    private fun setupObserver() {
+//        recipesViewModel.recipeList.observe(this, Observer { recipes ->
+//            recipesList.clear()
+//            recipesList.addAll(recipes)
+//            Log.v(tag, "Success!")
+//            Log.v(tag, recipes.toString())
+//        })
+//    }
 
-    @Composable
-    fun AllRecipes(list: List<Recipe>, navController: NavController) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    backgroundColor = MaterialTheme.colors.primary,
-                    title = { Text(stringResource(R.string.app_name)) }
-                )
-            }
-        ) {
-            Button(onClick = { navController.navigate("friendslist") }) {
-                Text(text = "Navigate next")
-            }
-            if (recipesList.isEmpty()){
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-                    CircularProgressIndicator()
-                }
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(16.dp)
-                ) {
-                    item {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .padding(vertical = 25.dp),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                "\uD83C\uDF3F  Plants in Cosmetics",
-                                style = MaterialTheme.typography.h3
-                            )
-                        }
-                    }
-                    items(recipesList) { recipe ->
-                        PlantCard(recipe.image!!, recipe.title!!, R.drawable.ic_android)
-                    }
-                }
-            }
-        }
-    }
+//    @Composable
+//    fun AllRecipes(list: List<Recipe>, navController: NavController) {
+//        Scaffold(
+//            topBar = {
+//                TopAppBar(
+//                    backgroundColor = MaterialTheme.colors.primary,
+//                    title = { Text(stringResource(R.string.app_name)) }
+//                )
+//            }
+//        ) {
+//            Button(onClick = { navController.navigate("friendslist") }) {
+//                Text(text = "Navigate next")
+//            }
+//            if (recipesList.isEmpty()){
+//                Column(
+//                    horizontalAlignment = Alignment.CenterHorizontally,
+//                    verticalArrangement = Arrangement.Center,
+//                    modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+//                    CircularProgressIndicator()
+//                }
+//            } else {
+//                LazyColumn(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    contentPadding = PaddingValues(16.dp)
+//                ) {
+//                    item {
+//                        Row(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .wrapContentHeight()
+//                                .padding(vertical = 25.dp),
+//                            horizontalArrangement = Arrangement.Center,
+//                            verticalAlignment = Alignment.CenterVertically
+//                        ) {
+//                            Text(
+//                                "\uD83C\uDF3F  Plants in Cosmetics",
+//                                style = MaterialTheme.typography.h3
+//                            )
+//                        }
+//                    }
+//                    items(recipesList) { recipe ->
+//                        RecipeItem(recipe)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     @Preview(showBackground = true)
     @Composable
@@ -175,10 +183,44 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun Profile(navController: NavController) {
-        AllRecipes(list = recipesList, navController)
+    fun RecipesList(modifier: Modifier, recipesList: Flow<PagingData<Recipe>>, context: Context) {
+        val recipesItems = recipesList.collectAsLazyPagingItems()
+
+        LazyColumn {
+            items(recipesItems) { item ->
+                item?.let {
+                    RecipeItem(recipesData = item, onClick = {
+                        Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
+                    },
+                    )
+                }
+            }
+            recipesItems.apply {
+                when {
+                    loadState.refresh is LoadState.Loading -> {
+                        //You can add modifier to manage load state when first time response page is loading
+                    }
+                    loadState.append is LoadState.Loading -> {
+                        //You can add modifier to manage load state when next response page is loading
+                    }
+                    loadState.append is LoadState.Error -> {
+                        //You can use modifier to show error message
+                    }
+                }
+            }
+        }
     }
 
+    @Composable
+    fun UserList(modifier: Modifier = Modifier, viewModel: RecipesViewModel, context: Context) {
+        RecipesList(modifier, recipesList = viewModel.recipesList, context)
+    }
+
+    @Composable
+    fun Profile(navController: NavController) {
+//        AllRecipes(list = recipesList, navController)
+        UserList(viewModel = recipesViewModel, context = this)
+    }
 
     @Composable
     fun FriendsList(navController: NavController) {
@@ -202,7 +244,7 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int, val iconI
 }
 
 @Composable
-fun PlantCard(name: String, description: String, image: Int) {
+fun RecipeItem(recipesData: Recipe, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(10.dp)
@@ -215,27 +257,29 @@ fun PlantCard(name: String, description: String, image: Int) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            val image = rememberCoilPainter(
+                request = recipesData.image,
+                fadeIn = true)
             Image(
-                painter = painterResource(id = image),
+                painter = image,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(130.dp)
-                    .padding(8.dp),
-                contentScale = ContentScale.Fit,
+                    .height(100.dp)
+                    .clip(shape = RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.Crop
             )
             Column(Modifier.padding(8.dp)) {
                 Text(
-                    text = name,
+                    text = recipesData.title,
                     style = MaterialTheme.typography.h4,
                     color = MaterialTheme.colors.onSurface,
-                )
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.body2,
                 )
             }
         }
     }
+
+
+
 
 
     @Composable

@@ -37,6 +37,9 @@ android {
 dependencies {
     implementation project(':domain')
 
+    //Coil (Image Uploading)
+    implementation 'com.google.accompanist:accompanist-coil:0.12.0'
+
     // Paging 3
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
@@ -57,9 +60,6 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
-    // RxJava
-    implementation "io.reactivex.rxjava3:rxjava:$rxJava_version"
-    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroid_version"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'

@@ -1,7 +1,5 @@
 package com.juniorteam.football.di
 
-
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import android.content.Context
 import com.juniorteam.data.constants.ApiConstants
 import com.juniorteam.data.source.remote.api.SpoonApi
@@ -25,7 +23,6 @@ class NetworkModule {
         Retrofit.Builder()
             .baseUrl(ApiConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
 
     @Provides

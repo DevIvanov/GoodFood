@@ -1,6 +1,5 @@
 package com.juniorteam.data.source.remote.api
 
-import com.juniorteam.data.model.entity.RecipeEntity
 import com.juniorteam.domain.model.Recipe
 
 data class RecipesResponse(

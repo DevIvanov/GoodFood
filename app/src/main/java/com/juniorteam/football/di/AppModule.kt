@@ -11,10 +11,10 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    fun provideSpoonRepositoryImpl(
-        api: SpoonApi
-    ): SpoonRepositoryImpl {
-        return SpoonRepositoryImpl(api)
-    }
+//    @Provides
+//    fun provideSpoonRepositoryImpl(
+//        api: SpoonApi
+//    ): SpoonRepositoryImpl {
+//        return SpoonRepositoryImpl(api)
+//    }
 }
