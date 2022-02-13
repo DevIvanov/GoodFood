@@ -21,7 +21,7 @@ class RecipesPagingSource(
         val position = params.key ?: RECIPES_STARTING_PAGE_INDEX
 
         return try {
-            val response = api.getRecipes(query)
+            val response = api.getRecipes(query = query)
             val photos = response.results
             total = response.totalResults.toString()
 

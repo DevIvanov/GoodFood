@@ -22,24 +22,7 @@ class RecipesViewModel @Inject constructor(
 
     private val tag = RecipesViewModel::class.java.simpleName
 
-//    private val _query = MutableLiveData<String>().apply {
-//        value = DEFAULT_QUERY
-//    }
-//
-//    val recipeList = _query.switchMap { queryString ->
-//        repository.getSearchResults(queryString).cachedIn(viewModelScope)
-//    }
-//
-//
-//    fun getRecipeList(query: String) {
-//        _query.value = query
-//    }
-
     private val _query = MutableStateFlow(DEFAULT_QUERY)
-
-//    val recipeList = _query.let {  queryString ->
-//        repository.getSearchResults(queryString.value).cachedIn(viewModelScope)
-//    }
 
     val recipesList: Flow<PagingData<Recipe>> =
         repository.getSearchResults(query = _query.value).cachedIn(viewModelScope)

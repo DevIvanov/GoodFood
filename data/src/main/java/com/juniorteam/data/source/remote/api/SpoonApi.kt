@@ -7,9 +7,10 @@ import retrofit2.http.Query
 
 interface SpoonApi {
 
-    @Headers(ApiConstants.HEADER, ApiConstants.API_KEY)
+    @Headers(ApiConstants.HEADER)
     @GET(ApiConstants.GET_RECIPES)
-    fun getRecipes(
+    suspend fun getRecipes(
+        @Query(ApiConstants.QUERY_API_KEY) apiKey: String = ApiConstants.API_KEY_VALUE,
         @Query(ApiConstants.QUERY_QUERY) query: String,
     ): RecipesResponse
 }

@@ -66,66 +66,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-//        recipesViewModel.getRecipeList("potato")
-//        setupObserver()
     }
 
-//    private fun setupObserver() {
-//        recipesViewModel.recipeList.observe(this, Observer { recipes ->
-//            recipesList.clear()
-//            recipesList.addAll(recipes)
-//            Log.v(tag, "Success!")
-//            Log.v(tag, recipes.toString())
-//        })
-//    }
-
-//    @Composable
-//    fun AllRecipes(list: List<Recipe>, navController: NavController) {
-//        Scaffold(
-//            topBar = {
-//                TopAppBar(
-//                    backgroundColor = MaterialTheme.colors.primary,
-//                    title = { Text(stringResource(R.string.app_name)) }
-//                )
-//            }
-//        ) {
-//            Button(onClick = { navController.navigate("friendslist") }) {
-//                Text(text = "Navigate next")
-//            }
-//            if (recipesList.isEmpty()){
-//                Column(
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                    verticalArrangement = Arrangement.Center,
-//                    modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
-//                    CircularProgressIndicator()
-//                }
-//            } else {
-//                LazyColumn(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    contentPadding = PaddingValues(16.dp)
-//                ) {
-//                    item {
-//                        Row(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .wrapContentHeight()
-//                                .padding(vertical = 25.dp),
-//                            horizontalArrangement = Arrangement.Center,
-//                            verticalAlignment = Alignment.CenterVertically
-//                        ) {
-//                            Text(
-//                                "\uD83C\uDF3F  Plants in Cosmetics",
-//                                style = MaterialTheme.typography.h3
-//                            )
-//                        }
-//                    }
-//                    items(recipesList) { recipe ->
-//                        RecipeItem(recipe)
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     @Preview(showBackground = true)
     @Composable
@@ -218,7 +160,6 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun Profile(navController: NavController) {
-//        AllRecipes(list = recipesList, navController)
         UserList(viewModel = recipesViewModel, context = this)
     }
 
