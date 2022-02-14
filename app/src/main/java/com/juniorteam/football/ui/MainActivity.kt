@@ -1,33 +1,17 @@
 package com.juniorteam.football.ui
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -35,32 +19,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
-import com.google.accompanist.coil.rememberCoilPainter
-import com.juniorteam.domain.model.Recipe
-import com.juniorteam.football.R
-import com.juniorteam.football.databinding.FragmentSplashBinding
+import com.juniorteam.football.ui.screens.RecipesScreen
+import com.juniorteam.football.ui.screens.Screen
 import com.juniorteam.football.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val tag = MainActivity::class.java.simpleName
-    private val recipesViewModel: RecipesViewModel by viewModels()
 
-    private val recipesList = mutableStateListOf<Recipe>()
+    private val recipesViewModel: RecipesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Navigation()
                 }
@@ -81,7 +55,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun Navigation() {
         val items = listOf(
-            Screen.Profile,
+            Screen.Recipes,
             Screen.FriendsList,
             Screen.FoodList
         )
@@ -116,8 +90,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         ) { innerPadding ->
-            NavHost(navController, startDestination = Screen.Profile.route, Modifier.padding(innerPadding)) {
-                composable(Screen.Profile.route) { Profile(navController) }
+            NavHost(navController, startDestination = Screen.Recipes.route, Modifier.padding(innerPadding)) {
+                composable(Screen.Recipes.route) { Recipes(navController) }
                 composable(Screen.FriendsList.route) { FriendsList(navController)}
                 composable(Screen.FoodList.route){ FoodList(navController) }
             }
@@ -125,42 +99,8 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun RecipesList(modifier: Modifier, recipesList: Flow<PagingData<Recipe>>, context: Context) {
-        val recipesItems = recipesList.collectAsLazyPagingItems()
-
-        LazyColumn {
-            items(recipesItems) { item ->
-                item?.let {
-                    RecipeItem(recipesData = item, onClick = {
-                        Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
-                    },
-                    )
-                }
-            }
-            recipesItems.apply {
-                when {
-                    loadState.refresh is LoadState.Loading -> {
-                        //You can add modifier to manage load state when first time response page is loading
-                    }
-                    loadState.append is LoadState.Loading -> {
-                        //You can add modifier to manage load state when next response page is loading
-                    }
-                    loadState.append is LoadState.Error -> {
-                        //You can use modifier to show error message
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    fun UserList(modifier: Modifier = Modifier, viewModel: RecipesViewModel, context: Context) {
-        RecipesList(modifier, recipesList = viewModel.recipesList, context)
-    }
-
-    @Composable
-    fun Profile(navController: NavController) {
-        UserList(viewModel = recipesViewModel, context = this)
+    fun Recipes(navController: NavController) {
+        RecipesScreen().RecipesList(recipesList = recipesViewModel.recipesList, context = this)
     }
 
     @Composable
@@ -178,62 +118,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-sealed class Screen(val route: String, @StringRes val resourceId: Int, val iconId: Int) {
-    object Profile : Screen("profile", R.string.profile, R.drawable.ic_android)
-    object FriendsList : Screen("friendslist", R.string.friendsList, R.drawable.ic_fastfood)
-    object FoodList : Screen("foodlist", R.string.foodList, R.drawable.ic_fitness_center)
-}
-
-@Composable
-fun RecipeItem(recipesData: Recipe, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        shape = MaterialTheme.shapes.medium,
-        elevation = 5.dp,
-        backgroundColor = MaterialTheme.colors.surface
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            val image = rememberCoilPainter(
-                request = recipesData.image,
-                fadeIn = true)
-            Image(
-                painter = image,
-                contentDescription = null,
-                modifier = Modifier
-                    .height(100.dp)
-                    .clip(shape = RoundedCornerShape(12.dp)),
-                contentScale = ContentScale.Crop
-            )
-            Column(Modifier.padding(8.dp)) {
-                Text(
-                    text = recipesData.title,
-                    style = MaterialTheme.typography.h4,
-                    color = MaterialTheme.colors.onSurface,
-                )
-            }
-        }
-    }
-
-
-
-
-
-    @Composable
-    fun Fragment() {
-        AndroidView(
-            modifier =
-            Modifier
-                .fillMaxHeight()
-                .fillMaxWidth(),
-            factory = { context ->
-                FrameLayout(context).apply {
-                    FragmentSplashBinding.inflate(LayoutInflater.from(context), this, true).root
-                }
-            })
-    }
-}
