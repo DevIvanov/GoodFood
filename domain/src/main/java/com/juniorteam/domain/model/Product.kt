@@ -1,10 +1,10 @@
-package com.juniorteam.data.model.entity
+package com.juniorteam.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class RecipeEntity(
+data class Product(
     val id : Int,
     val title : String,
     val image : String,

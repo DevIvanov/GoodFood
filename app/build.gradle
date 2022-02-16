@@ -73,9 +73,10 @@ dependencies {
     // Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
 
-    // Paging 3
-    implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
-    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    // Paging Compose
+    implementation "androidx.paging:paging-compose:$paging_compose_version"
+
+//    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // Retrofit2 + GSON
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

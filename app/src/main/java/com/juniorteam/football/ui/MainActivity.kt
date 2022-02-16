@@ -19,8 +19,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.juniorteam.football.ui.screens.RecipesScreen
+import com.juniorteam.football.ui.screens.recipes.RecipesScreen
 import com.juniorteam.football.ui.screens.Screen
+import com.juniorteam.football.ui.screens.ingredients.IngredientsScreen
+import com.juniorteam.football.ui.screens.ingredients.IngredientsViewModel
+import com.juniorteam.football.ui.screens.products.ProductsScreen
+import com.juniorteam.football.ui.screens.products.ProductsViewModel
+import com.juniorteam.football.ui.screens.recipes.RecipesViewModel
 import com.juniorteam.football.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +35,8 @@ class MainActivity : ComponentActivity() {
     private val tag = MainActivity::class.java.simpleName
 
     private val recipesViewModel: RecipesViewModel by viewModels()
+    private val ingredientsViewModel: IngredientsViewModel by viewModels()
+    private val productsViewModel: ProductsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +49,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
@@ -51,13 +57,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
     @Composable
     fun Navigation() {
         val items = listOf(
             Screen.Recipes,
-            Screen.FriendsList,
-            Screen.FoodList
+            Screen.Ingredients,
+            Screen.Products
         )
         val navController = rememberNavController()
         Scaffold(
@@ -90,31 +95,27 @@ class MainActivity : ComponentActivity() {
                 }
             }
         ) { innerPadding ->
-            NavHost(navController, startDestination = Screen.Recipes.route, Modifier.padding(innerPadding)) {
-                composable(Screen.Recipes.route) { Recipes(navController) }
-                composable(Screen.FriendsList.route) { FriendsList(navController)}
-                composable(Screen.FoodList.route){ FoodList(navController) }
+            NavHost(navController, startDestination = Screen.Ingredients.route, Modifier.padding(innerPadding)) {
+                composable(Screen.Recipes.route) { Recipes() }
+                composable(Screen.Ingredients.route) { Ingredients()}
+                composable(Screen.Products.route){ Products() }
             }
         }
     }
 
     @Composable
-    fun Recipes(navController: NavController) {
+    fun Recipes() {
         RecipesScreen().RecipesList(recipesList = recipesViewModel.recipesList, context = this)
     }
 
     @Composable
-    fun FriendsList(navController: NavController) {
-        Button(onClick = { navController.navigate("profile") }) {
-            Text(text = "Navigate next 2")
-        }
+    fun Ingredients() {
+        IngredientsScreen().IngredientsList(ingredientsList = ingredientsViewModel.ingredientsList, context = this)
     }
 
     @Composable
-    fun FoodList(navController: NavController) {
-        Button(onClick = { navController.navigate("friendsList") }) {
-            Text(text = "Navigate next 3")
-        }
+    fun Products() {
+        ProductsScreen().ProductsList(productList = productsViewModel.productList, context = this)
     }
 }
 

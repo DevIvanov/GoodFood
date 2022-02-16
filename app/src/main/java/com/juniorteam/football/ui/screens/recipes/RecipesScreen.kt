@@ -1,8 +1,9 @@
-package com.juniorteam.football.ui.screens
+package com.juniorteam.football.ui.screens.recipes
 
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +22,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Recipe
-import com.juniorteam.football.ui.RecipesViewModel
 import kotlinx.coroutines.flow.Flow
 
 class RecipesScreen {
@@ -60,7 +60,8 @@ class RecipesScreen {
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxWidth()
-                .wrapContentHeight(),
+                .wrapContentHeight()
+                .clickable { onClick },
             shape = MaterialTheme.shapes.medium,
             elevation = 5.dp,
             backgroundColor = MaterialTheme.colors.surface

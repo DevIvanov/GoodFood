@@ -35,6 +35,8 @@ android {
 }
 
 dependencies {
+    // Paging Compose
+    implementation "androidx.paging:paging-compose:$paging_compose_version"
 
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$dagger_hilt_version"

@@ -5,6 +5,6 @@ import com.juniorteam.football.R
 
 sealed class Screen(val route: String, @StringRes val resourceId: Int, val iconId: Int) {
     object Recipes : Screen("recipes", R.string.recipes, R.drawable.ic_food_dinner)
-    object FriendsList : Screen("friendslist", R.string.friendsList, R.drawable.ic_fastfood)
-    object FoodList : Screen("foodlist", R.string.foodList, R.drawable.ic_fitness_center)
+    object Ingredients: Screen("ingredients", R.string.ingredients, R.drawable.ic_fastfood)
+    object Products : Screen("products", R.string.products, R.drawable.ic_fitness_center)
 }

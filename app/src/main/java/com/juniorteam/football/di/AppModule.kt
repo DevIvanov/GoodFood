@@ -1,9 +1,6 @@
 package com.juniorteam.football.di
 
-import com.juniorteam.data.repository.SpoonRepositoryImpl
-import com.juniorteam.data.source.remote.api.SpoonApi
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
