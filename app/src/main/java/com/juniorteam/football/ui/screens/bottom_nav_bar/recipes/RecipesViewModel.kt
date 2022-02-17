@@ -1,10 +1,9 @@
-package com.juniorteam.football.ui.screens.recipes
+package com.juniorteam.football.ui.screens.bottom_nav_bar.recipes
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.juniorteam.data.constants.ApiConstants.DEFAULT_QUERY_INGREDIENT
-import com.juniorteam.data.constants.ApiConstants.DEFAULT_QUERY_RECIPE
 import com.juniorteam.data.repository.SpoonRepositoryImpl
 import com.juniorteam.domain.model.Recipe
 import com.juniorteam.football.base.BaseViewModel

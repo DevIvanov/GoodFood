@@ -1,6 +1,7 @@
-package com.juniorteam.football.ui.screens.products
+package com.juniorteam.football.ui.screens.bottom_nav_bar.ingredients
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -21,24 +22,28 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
-import com.juniorteam.domain.model.Product
+import com.juniorteam.data.constants.ApiConstants.BASE_PATH_IMAGE
+import com.juniorteam.domain.model.Ingredient
 import kotlinx.coroutines.flow.Flow
 
-class ProductsScreen {
+class IngredientsScreen {
+    private val tag = IngredientsScreen::class.java.simpleName
+
     @Composable
-    fun ProductsList(modifier: Modifier = Modifier, productList: Flow<PagingData<Product>>, context: Context) {
-        val productItems = productList.collectAsLazyPagingItems()
+    fun IngredientsList(modifier: Modifier = Modifier, ingredientsList: Flow<PagingData<Ingredient>>, context: Context) {
+        val ingredientItems = ingredientsList.collectAsLazyPagingItems()
 
         LazyColumn {
-            items(productItems) { item ->
+            items(ingredientItems) { item ->
                 item?.let {
-                    ProductItem(productData = item, onClick = {
+                    IngredientItem(ingredientsData = item, onClick = {
                         Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
                     },
                     )
                 }
+                Log.e(tag, item!!.toString())
             }
-            productItems.apply {
+            ingredientItems.apply {
                 when {
                     loadState.refresh is LoadState.Loading -> {
                         //You can add modifier to manage load state when first time response page is loading
@@ -55,13 +60,13 @@ class ProductsScreen {
     }
 
     @Composable
-    fun ProductItem(productData: Product, onClick: () -> Unit) {
+    fun IngredientItem(ingredientsData: Ingredient, onClick: () -> Unit) {
         Card(
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .clickable { onClick },
+                .clickable { onClick() },
             shape = MaterialTheme.shapes.medium,
             elevation = 5.dp,
             backgroundColor = MaterialTheme.colors.surface
@@ -70,7 +75,7 @@ class ProductsScreen {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 val image = rememberCoilPainter(
-                    request = productData.image,
+                    request = BASE_PATH_IMAGE + ingredientsData.image,
                     fadeIn = true
                 )
                 Image(
@@ -83,7 +88,7 @@ class ProductsScreen {
                 )
                 Column(Modifier.padding(8.dp)) {
                     Text(
-                        text = productData.title,
+                        text = ingredientsData.name,
                         style = MaterialTheme.typography.h4,
                         color = MaterialTheme.colors.onSurface,
                     )

@@ -1,4 +1,4 @@
-package com.juniorteam.football.ui.screens.recipes
+package com.juniorteam.football.ui.screens.bottom_nav_bar.recipes
 
 import android.content.Context
 import android.widget.Toast
@@ -61,7 +61,7 @@ class RecipesScreen {
                 .padding(10.dp)
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .clickable { onClick },
+                .clickable { onClick() },
             shape = MaterialTheme.shapes.medium,
             elevation = 5.dp,
             backgroundColor = MaterialTheme.colors.surface
