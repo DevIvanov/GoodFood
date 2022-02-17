@@ -110,7 +110,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun Ingredients() {
-        IngredientsScreen().IngredientsList(ingredientsList = ingredientsViewModel.ingredientsList, context = this)
+        IngredientsScreen().IngredientsList(ingredientsList = ingredientsViewModel.ingredientList, context = this)
     }
 
     @Composable

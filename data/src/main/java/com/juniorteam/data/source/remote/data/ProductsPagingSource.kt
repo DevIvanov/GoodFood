@@ -22,19 +22,22 @@ class ProductsPagingSource(
 
         return try {
             val response = api.getProducts(query = query)
-            Log.e(tag, response.toString())
-            val products = response.results
-            total = response.totalResults.toString()
+            Log.v(tag, response.toString())
+            val products = response.products
+            total = response.totalProducts.toString()
 
             LoadResult.Page(
                 data = products,
                 prevKey = if (position == PRODUCTS_STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = if (products.isNullOrEmpty()) null else position + 1
+                nextKey = if (products.isEmpty()) null else position + 1
             )
         } catch (exception: IOException) {
             Log.e(tag, exception.message.toString())
             LoadResult.Error(exception)
         } catch (exception: HttpException) {
+            Log.e(tag, exception.message.toString())
+            LoadResult.Error(exception)
+        } catch (exception: Exception) {
             Log.e(tag, exception.message.toString())
             LoadResult.Error(exception)
         }

@@ -21,10 +21,13 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
+import com.juniorteam.data.constants.ApiConstants.BASE_PATH_IMAGE
 import com.juniorteam.domain.model.Ingredient
 import kotlinx.coroutines.flow.Flow
 
 class IngredientsScreen {
+    private val tag = IngredientsScreen::class.java.simpleName
+
     @Composable
     fun IngredientsList(modifier: Modifier = Modifier, ingredientsList: Flow<PagingData<Ingredient>>, context: Context) {
         val ingredientItems = ingredientsList.collectAsLazyPagingItems()
@@ -37,7 +40,7 @@ class IngredientsScreen {
                     },
                     )
                 }
-                Log.e("TAG", item!!.toString())
+                Log.e(tag, item!!.toString())
             }
             ingredientItems.apply {
                 when {
@@ -70,7 +73,7 @@ class IngredientsScreen {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 val image = rememberCoilPainter(
-                    request = ingredientsData.image,
+                    request = BASE_PATH_IMAGE + ingredientsData.image,
                     fadeIn = true
                 )
                 Image(

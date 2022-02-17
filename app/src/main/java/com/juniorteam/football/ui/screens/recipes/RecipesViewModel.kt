@@ -3,6 +3,7 @@ package com.juniorteam.football.ui.screens.recipes
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.juniorteam.data.constants.ApiConstants.DEFAULT_QUERY_INGREDIENT
 import com.juniorteam.data.constants.ApiConstants.DEFAULT_QUERY_RECIPE
 import com.juniorteam.data.repository.SpoonRepositoryImpl
 import com.juniorteam.domain.model.Recipe
@@ -17,7 +18,7 @@ class RecipesViewModel @Inject constructor(
     private val repository: SpoonRepositoryImpl
 ) : BaseViewModel() {
 
-    private val _query = MutableStateFlow(DEFAULT_QUERY_RECIPE)
+    private val _query = MutableStateFlow(DEFAULT_QUERY_INGREDIENT)
 
     val recipesList: Flow<PagingData<Recipe>> =
         repository.getRecipesResults(query = _query.value).cachedIn(viewModelScope)

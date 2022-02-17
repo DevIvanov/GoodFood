@@ -19,6 +19,6 @@ class IngredientsViewModel @Inject constructor(
 
     private val _query = MutableStateFlow(DEFAULT_QUERY_INGREDIENT)
 
-    val ingredientsList: Flow<PagingData<Ingredient>> =
+    val ingredientList: Flow<PagingData<Ingredient>> =
         repository.getIngredientsResults(query = _query.value).cachedIn(viewModelScope)
 }
