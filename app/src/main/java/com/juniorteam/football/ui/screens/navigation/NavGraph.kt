@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import com.juniorteam.domain.model.Ingredient
 import com.juniorteam.domain.model.Product
 import com.juniorteam.domain.model.Recipe
+import com.juniorteam.football.ui.screens.bottom_nav_bar.ingredients.IngredientsViewModel
 import com.juniorteam.football.ui.screens.bottom_nav_bar.navigation_bottom_bar.NavigationBottomBar
 import com.juniorteam.football.ui.screens.splash.AnimatedSplashScreen
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.Flow
 fun SetupNavGraph(
     navController: NavHostController,
     recipesList: Flow<PagingData<Recipe>>,
-    ingredientList: Flow<PagingData<Ingredient>>,
+    ingredientsViewModel: IngredientsViewModel,
     productsList: Flow<PagingData<Product>>,
     context: Context
 ) {
@@ -31,7 +32,7 @@ fun SetupNavGraph(
         composable(route = Screen.BottomNavBar.route) {
             NavigationBottomBar(
                 recipesList = recipesList,
-                ingredientList = ingredientList,
+                ingredientsViewModel = ingredientsViewModel,
                 productsList = productsList,
                 context = context
             )

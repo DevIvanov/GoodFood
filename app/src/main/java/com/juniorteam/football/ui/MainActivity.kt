@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                 SetupNavGraph(
                     navController = navController,
                     recipesList = recipesViewModel.recipesList,
-                    ingredientList = ingredientsViewModel.ingredientList,
+                    ingredientsViewModel = ingredientsViewModel,
                     productsList = productsViewModel.productList,
                     context = this
                 )

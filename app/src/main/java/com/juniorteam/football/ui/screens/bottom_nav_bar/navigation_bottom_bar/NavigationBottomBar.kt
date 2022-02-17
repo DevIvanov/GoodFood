@@ -15,11 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.PagingData
-import com.juniorteam.domain.model.Ingredient
 import com.juniorteam.domain.model.Product
 import com.juniorteam.domain.model.Recipe
 import com.juniorteam.football.ui.screens.bottom_nav_bar.ScreenNavBar
 import com.juniorteam.football.ui.screens.bottom_nav_bar.ingredients.IngredientsScreen
+import com.juniorteam.football.ui.screens.bottom_nav_bar.ingredients.IngredientsViewModel
 import com.juniorteam.football.ui.screens.bottom_nav_bar.products.ProductsScreen
 import com.juniorteam.football.ui.screens.bottom_nav_bar.recipes.RecipesScreen
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun NavigationBottomBar(
     recipesList: Flow<PagingData<Recipe>>,
-    ingredientList: Flow<PagingData<Ingredient>>,
+    ingredientsViewModel: IngredientsViewModel,
     productsList: Flow<PagingData<Product>>,
     context: Context
 ) {
@@ -69,7 +69,7 @@ fun NavigationBottomBar(
     ) { innerPadding ->
         NavHost(navController, startDestination = ScreenNavBar.Ingredients.route, Modifier.padding(innerPadding)) {
             composable(ScreenNavBar.Recipes.route) { RecipesScreen().RecipesList(recipesList = recipesList, context = context) }
-            composable(ScreenNavBar.Ingredients.route) { IngredientsScreen().IngredientsList(ingredientsList = ingredientList, context = context)}
+            composable(ScreenNavBar.Ingredients.route) { IngredientsScreen(viewModel = ingredientsViewModel, context = context)}
             composable(ScreenNavBar.Products.route){ ProductsScreen().ProductsList(productList = productsList, context = context) }
         }
     }

@@ -1,5 +1,7 @@
 package com.juniorteam.football.ui.screens.bottom_nav_bar.ingredients
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -17,8 +19,16 @@ class IngredientsViewModel @Inject constructor(
     private val repository: SpoonRepositoryImpl
 ) : BaseViewModel() {
 
-    private val _query = MutableStateFlow(DEFAULT_QUERY_INGREDIENT)
+//    private val _query = MutableStateFlow(DEFAULT_QUERY_INGREDIENT)
+
+    private val _query = MutableLiveData<String>().apply {
+        value = DEFAULT_QUERY_INGREDIENT
+    }
+
+    val query: LiveData<String> get() = _query
 
     val ingredientList: Flow<PagingData<Ingredient>> =
-        repository.getIngredientsResults(query = _query.value).cachedIn(viewModelScope)
+        repository.getIngredientsResults(query = _query.value!!).cachedIn(viewModelScope)
+
+    fun setQuery(query: String) = _query.postValue(query)
 }
