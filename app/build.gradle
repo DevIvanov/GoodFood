@@ -10,7 +10,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.juniorteam.football"
+        applicationId "com.juniorteam.goodfood"
         minSdk 23
         targetSdk 32
         versionCode 1
@@ -75,8 +75,6 @@ dependencies {
 
     // Paging Compose
     implementation "androidx.paging:paging-compose:$paging_compose_version"
-
-//    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // Retrofit2 + GSON
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
