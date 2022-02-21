@@ -1,6 +1,8 @@
 package com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients
 
 import android.content.Context
+import android.util.Log
+import android.view.KeyEvent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -17,9 +19,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,20 +49,24 @@ fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel, context: Conte
     }
 }
 
+
 @Composable
 fun SearchToolbar(state: MutableState<TextFieldValue>) {
-    Surface(modifier = Modifier
-        .fillMaxWidth(),
+    val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
+    var query: TextFieldValue? = null
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth(),
 //        elevation = 8.dp
-    ){
+    ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             TextField(
                 modifier = Modifier
-                    .fillMaxWidth(),//(.9f)
-//                    .padding(8.dp),
+                    .fillMaxWidth(),
                 value = state.value,
                 onValueChange = { value ->
-                    state.value = value
+                    query = value
                 },
                 label = { Text(text = "Search") },
                 keyboardOptions = KeyboardOptions(
@@ -64,20 +75,17 @@ fun SearchToolbar(state: MutableState<TextFieldValue>) {
                 ),
                 keyboardActions = KeyboardActions(
                     onSearch = {
-                        KeyboardActions.Default
+                        focusManager.clearFocus()
+                        if (query != null)
+                            state.value = query!!
+                        else
+                            Toast.makeText(context, "Enter text!", Toast.LENGTH_SHORT).show()
                     }
                 ),
                 leadingIcon = {
                     Icon(Icons.Filled.Search, "")
                 },
-//                onImeActionPerformed = { action, softKeyboardController ->
-//                    if (action == ImeAction.Done) {
-//                        ingredientsViewModel.setQuery(query = ingredientsViewModel.query.value!!)
-//                        softKeyboardController?.hideSoftwareKeyboard()
-//                    }
-//                },
-                textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
-//                backgroundColor = MaterialTheme.colors.surface
+                textStyle = TextStyle(color = MaterialTheme.colors.onSurface)
             )
         }
 
@@ -89,8 +97,10 @@ fun SearchToolbar(state: MutableState<TextFieldValue>) {
                         state: MutableState<TextFieldValue>,
                         ingredientsViewModel: IngredientsViewModel,
                         context: Context) {
+
         ingredientsViewModel.setQuery(state.value.text)
         val ingredientItems = ingredientsViewModel.ingredientList.collectAsLazyPagingItems()
+        Log.d("TAG", "ingredients = $ingredientItems")
 
         LazyColumn {
             items(ingredientItems) { item ->

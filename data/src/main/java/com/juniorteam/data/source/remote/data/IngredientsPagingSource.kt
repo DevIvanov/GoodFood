@@ -22,9 +22,9 @@ class IngredientsPagingSource(
 
         return try {
             val response = api.getIngredients(query = query)
-            Log.e(tag, response.toString())
+            Log.i(tag, "response = $response")
             val ingredients = response.results
-            Log.e(tag, ingredients.toString())
+            Log.e(tag, "query = $query")
             total = response.totalResults.toString()
 
             LoadResult.Page(
