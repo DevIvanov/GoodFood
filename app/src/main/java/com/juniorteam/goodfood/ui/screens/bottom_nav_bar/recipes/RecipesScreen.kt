@@ -16,25 +16,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph
+import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Recipe
+import com.juniorteam.goodfood.ui.screens.navigation.Screen
+
 import kotlinx.coroutines.flow.Flow
 
 class RecipesScreen {
     @Composable
-    fun RecipesList(modifier: Modifier = Modifier, recipesList: Flow<PagingData<Recipe>>, context: Context) {
+    fun RecipesList(modifier: Modifier = Modifier, recipesList: Flow<PagingData<Recipe>>, context: Context, navController: NavHostController,externalNavGraph: NavHostController) {
         val recipesItems = recipesList.collectAsLazyPagingItems()
 
         LazyColumn {
             items(recipesItems) { item ->
                 item?.let {
-                    RecipeItem(recipesData = item, onClick = {
-                        Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
-                    },
+                    RecipeItem(
+                        recipesData = item,
+                        onClick = {
+                            Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
+                            externalNavGraph.navigate(Screen.RecipeDetails.route)
+                        },
                     )
                 }
             }

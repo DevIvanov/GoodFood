@@ -9,7 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -29,7 +31,8 @@ fun NavigationBottomBar(
     recipesList: Flow<PagingData<Recipe>>,
     ingredientsViewModel: IngredientsViewModel,
     productsList: Flow<PagingData<Product>>,
-    context: Context
+    context: Context,
+    externalNavGraph: NavHostController
 ) {
     val items = listOf(
         ScreenNavBar.Recipes,
@@ -68,7 +71,7 @@ fun NavigationBottomBar(
         }
     ) { innerPadding ->
         NavHost(navController, startDestination = ScreenNavBar.Ingredients.route, Modifier.padding(innerPadding)) {
-            composable(ScreenNavBar.Recipes.route) { RecipesScreen().RecipesList(recipesList = recipesList, context = context) }
+            composable(ScreenNavBar.Recipes.route) { RecipesScreen().RecipesList(recipesList = recipesList, context = context, navController = navController, externalNavGraph = externalNavGraph) }
             composable(ScreenNavBar.Ingredients.route) { IngredientsScreen(ingredientsViewModel = ingredientsViewModel, context = context)}
             composable(ScreenNavBar.Products.route){ ProductsScreen().ProductsList(productList = productsList, context = context) }
         }

@@ -6,11 +6,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.paging.PagingData
-import com.juniorteam.domain.model.Ingredient
 import com.juniorteam.domain.model.Product
 import com.juniorteam.domain.model.Recipe
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients.IngredientsViewModel
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.navigation_bottom_bar.NavigationBottomBar
+import com.juniorteam.goodfood.ui.screens.recipe_details.RecipeDetailsScreen
 import com.juniorteam.goodfood.ui.screens.splash.AnimatedSplashScreen
 import kotlinx.coroutines.flow.Flow
 
@@ -34,8 +34,12 @@ fun SetupNavGraph(
                 recipesList = recipesList,
                 ingredientsViewModel = ingredientsViewModel,
                 productsList = productsList,
-                context = context
+                context = context,
+                externalNavGraph = navController
             )
+        }
+        composable(route = Screen.RecipeDetails.route) {
+            RecipeDetailsScreen()
         }
     }
 }

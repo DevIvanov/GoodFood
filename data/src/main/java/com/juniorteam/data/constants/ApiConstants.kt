@@ -16,5 +16,6 @@ object ApiConstants {
     const val DEFAULT_QUERY_RECIPE = "tomato"
     const val DEFAULT_QUERY_INGREDIENT = "carrot"
     const val DEFAULT_QUERY_PRODUCT = "pizza" //"apple"
+    const val GET_PRODUCT_BY_ID = "recipes/{id}/information"
 
 }
