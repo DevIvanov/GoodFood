@@ -1,6 +1,5 @@
 package com.juniorteam.goodfood.ui.screens.bottom_nav_bar.navigation_bottom_bar
 
-import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -14,22 +13,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.paging.PagingData
-import com.juniorteam.domain.model.Product
-import com.juniorteam.domain.model.Recipe
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ScreenNavBar
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients.IngredientsScreen
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients.IngredientsViewModel
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.products.ProductsScreen
+import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.products.ProductsViewModel
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes.RecipesScreen
-import kotlinx.coroutines.flow.Flow
+import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes.RecipesViewModel
 
 @Composable
 fun NavigationBottomBar(
-    recipesList: Flow<PagingData<Recipe>>,
+    recipesViewModel: RecipesViewModel,
     ingredientsViewModel: IngredientsViewModel,
-    productsList: Flow<PagingData<Product>>,
-    context: Context
+    productsViewModel: ProductsViewModel
 ) {
     val items = listOf(
         ScreenNavBar.Recipes,
@@ -68,9 +64,9 @@ fun NavigationBottomBar(
         }
     ) { innerPadding ->
         NavHost(navController, startDestination = ScreenNavBar.Ingredients.route, Modifier.padding(innerPadding)) {
-            composable(ScreenNavBar.Recipes.route) { RecipesScreen().RecipesList(recipesList = recipesList, context = context) }
-            composable(ScreenNavBar.Ingredients.route) { IngredientsScreen(ingredientsViewModel = ingredientsViewModel, context = context)}
-            composable(ScreenNavBar.Products.route){ ProductsScreen().ProductsList(productList = productsList, context = context) }
+            composable(ScreenNavBar.Recipes.route) { RecipesScreen(recipesViewModel = recipesViewModel) }
+            composable(ScreenNavBar.Ingredients.route) { IngredientsScreen(ingredientsViewModel = ingredientsViewModel)}
+            composable(ScreenNavBar.Products.route){ ProductsScreen(productsViewModel = productsViewModel) }
         }
     }
 }

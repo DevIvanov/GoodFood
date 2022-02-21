@@ -41,11 +41,11 @@ import com.juniorteam.domain.model.Ingredient
 
 
 @Composable
-fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel, context: Context) {
+fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel) {
     Column {
         val textState = remember { mutableStateOf(TextFieldValue("")) }
         SearchToolbar(state = textState)
-        IngredientsList(state = textState, ingredientsViewModel = ingredientsViewModel, context = context)
+        IngredientsList(state = textState, ingredientsViewModel = ingredientsViewModel)
     }
 }
 
@@ -95,11 +95,11 @@ fun SearchToolbar(state: MutableState<TextFieldValue>) {
     @Composable
     fun IngredientsList(modifier: Modifier = Modifier,
                         state: MutableState<TextFieldValue>,
-                        ingredientsViewModel: IngredientsViewModel,
-                        context: Context) {
+                        ingredientsViewModel: IngredientsViewModel) {
 
         ingredientsViewModel.setQuery(state.value.text)
         val ingredientItems = ingredientsViewModel.ingredientList.collectAsLazyPagingItems()
+        val context = LocalContext.current
         Log.d("TAG", "ingredients = $ingredientItems")
 
         LazyColumn {
