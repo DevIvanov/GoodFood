@@ -9,18 +9,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
-import com.juniorteam.goodfood.ui.theme.Purple700
+import com.juniorteam.goodfood.ui.theme.Cilantro
 import kotlinx.coroutines.delay
 
 @Composable
@@ -46,7 +45,7 @@ fun AnimatedSplashScreen(navController: NavHostController) {
 fun Splash(alpha: Float) {
     Box(
         modifier = Modifier
-            .background(if (isSystemInDarkTheme()) Color.Black else Purple700)
+            .background(if (isSystemInDarkTheme()) Color.Black else Cilantro)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
@@ -54,7 +53,7 @@ fun Splash(alpha: Float) {
             modifier = Modifier
                 .size(120.dp)
                 .alpha(alpha = alpha),
-            imageVector = Icons.Default.Email,
+            painter = painterResource(id = com.juniorteam.goodfood.R.drawable.ic_carrot),
             contentDescription = "Logo Icon",
             tint = Color.White
         )

@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -33,6 +35,10 @@ import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.data.constants.ApiConstants.BASE_PATH_IMAGE
 import com.juniorteam.data.constants.ApiConstants.DEFAULT_QUERY_INGREDIENT
 import com.juniorteam.domain.model.Ingredient
+import com.juniorteam.goodfood.R
+import com.juniorteam.goodfood.ui.theme.Avocado
+import com.juniorteam.goodfood.ui.theme.Cilantro
+import com.juniorteam.goodfood.ui.theme.SmokedSalmon
 
 
 @Composable
@@ -45,6 +51,13 @@ fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel) {
 }
 
 
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    val textState = remember { mutableStateOf(TextFieldValue("")) }
+    SearchToolbar(state = textState)
+}
+
 @Composable
 fun SearchToolbar(state: MutableState<TextFieldValue>) {
     val context = LocalContext.current
@@ -53,7 +66,8 @@ fun SearchToolbar(state: MutableState<TextFieldValue>) {
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
-//        elevation = 8.dp
+        elevation = 8.dp,
+        color = Avocado
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             TextField(
