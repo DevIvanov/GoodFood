@@ -89,7 +89,8 @@ fun IngredientsList(modifier: Modifier = Modifier,
                     state: MutableState<TextFieldValue>,
                     ingredientsViewModel: IngredientsViewModel) {
 
-    ingredientsViewModel.setQuery(state.value.text)
+    if (state.value.text != "")
+        ingredientsViewModel.setQuery(state.value.text)
 
     val ingredientItems = ingredientsViewModel.getIngredientList().collectAsLazyPagingItems()
 
