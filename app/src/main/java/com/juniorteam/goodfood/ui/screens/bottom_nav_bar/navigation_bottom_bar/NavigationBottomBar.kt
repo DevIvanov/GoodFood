@@ -23,15 +23,15 @@ import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ScreenNavBar
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients.IngredientsScreen
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients.IngredientsViewModel
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.products.ProductsScreen
+import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.products.ProductsViewModel
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes.RecipesScreen
-import kotlinx.coroutines.flow.Flow
+import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes.RecipesViewModel
 
 @Composable
 fun NavigationBottomBar(
-    recipesList: Flow<PagingData<Recipe>>,
+    recipesViewModel: RecipesViewModel,
     ingredientsViewModel: IngredientsViewModel,
-    productsList: Flow<PagingData<Product>>,
-    context: Context,
+    productsViewModel: ProductsViewModel,
     externalNavGraph: NavHostController
 ) {
     val items = listOf(
@@ -71,9 +71,9 @@ fun NavigationBottomBar(
         }
     ) { innerPadding ->
         NavHost(navController, startDestination = ScreenNavBar.Ingredients.route, Modifier.padding(innerPadding)) {
-            composable(ScreenNavBar.Recipes.route) { RecipesScreen().RecipesList(recipesList = recipesList, context = context, navController = navController, externalNavGraph = externalNavGraph) }
-            composable(ScreenNavBar.Ingredients.route) { IngredientsScreen(ingredientsViewModel = ingredientsViewModel, context = context)}
-            composable(ScreenNavBar.Products.route){ ProductsScreen().ProductsList(productList = productsList, context = context) }
+            composable(ScreenNavBar.Recipes.route) { RecipesScreen(recipesViewModel = recipesViewModel,externalNavGraph = externalNavGraph) }
+            composable(ScreenNavBar.Ingredients.route) { IngredientsScreen(ingredientsViewModel = ingredientsViewModel)}
+            composable(ScreenNavBar.Products.route){ ProductsScreen(productsViewModel = productsViewModel) }
         }
     }
 }

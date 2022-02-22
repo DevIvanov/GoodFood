@@ -29,10 +29,9 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 SetupNavGraph(
                     navController = navController,
-                    recipesList = recipesViewModel.recipesList,
+                    recipesViewModel = recipesViewModel,
                     ingredientsViewModel = ingredientsViewModel,
-                    productsList = productsViewModel.productList,
-                    context = this
+                    productsViewModel = productsViewModel
                 )
             }
         }
