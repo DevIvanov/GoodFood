@@ -1,4 +1,4 @@
-package com.juniorteam.goodfood.ui.screens.bottom_nav_bar
+package com.juniorteam.goodfood.ui.navigation.nav_objects
 
 import androidx.annotation.StringRes
 import com.juniorteam.goodfood.R

@@ -1,6 +1,5 @@
 package com.juniorteam.goodfood.ui.screens.bottom_nav_bar.navigation_bottom_bar
 
-import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -9,23 +8,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.paging.PagingData
-import com.juniorteam.domain.model.Product
-import com.juniorteam.domain.model.Recipe
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ScreenNavBar
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients.IngredientsScreen
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients.IngredientsViewModel
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.products.ProductsScreen
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.products.ProductsViewModel
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes.RecipesScreen
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes.RecipesViewModel
+import com.juniorteam.goodfood.ui.navigation.nav_objects.ScreenNavBar
+import com.juniorteam.goodfood.ui.screens.ingredients.IngredientsScreen
+import com.juniorteam.goodfood.ui.screens.ingredients.IngredientsViewModel
+import com.juniorteam.goodfood.ui.screens.products.ProductsScreen
+import com.juniorteam.goodfood.ui.screens.products.ProductsViewModel
+import com.juniorteam.goodfood.ui.screens.recipes.RecipesScreen
+import com.juniorteam.goodfood.ui.screens.recipes.RecipesViewModel
 
 @Composable
 fun NavigationBottomBar(

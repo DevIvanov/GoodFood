@@ -1,4 +1,4 @@
-package com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes
+package com.juniorteam.goodfood.ui.screens.recipes
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -22,7 +22,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Recipe
-import com.juniorteam.goodfood.ui.screens.navigation.Screen
+import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
 
 
 @Composable

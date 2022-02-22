@@ -1,20 +1,16 @@
-package com.juniorteam.goodfood.ui.screens.navigation
+package com.juniorteam.goodfood.ui.navigation
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.paging.PagingData
-import com.juniorteam.domain.model.Product
-import com.juniorteam.domain.model.Recipe
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients.IngredientsViewModel
+import com.juniorteam.goodfood.ui.screens.ingredients.IngredientsViewModel
 import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.navigation_bottom_bar.NavigationBottomBar
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.products.ProductsViewModel
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes.RecipesViewModel
+import com.juniorteam.goodfood.ui.screens.products.ProductsViewModel
+import com.juniorteam.goodfood.ui.screens.recipes.RecipesViewModel
+import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
 import com.juniorteam.goodfood.ui.screens.recipe_details.RecipeDetailsScreen
 import com.juniorteam.goodfood.ui.screens.splash.AnimatedSplashScreen
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SetupNavGraph(

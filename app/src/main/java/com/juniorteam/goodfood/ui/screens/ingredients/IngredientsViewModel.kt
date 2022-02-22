@@ -1,4 +1,4 @@
-package com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients
+package com.juniorteam.goodfood.ui.screens.ingredients
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -10,10 +10,8 @@ import com.juniorteam.data.constants.ApiConstants.DEFAULT_QUERY_INGREDIENT
 import com.juniorteam.data.repository.SpoonRepositoryImpl
 import com.juniorteam.domain.model.Ingredient
 import com.juniorteam.goodfood.base.BaseViewModel
-import com.juniorteam.goodfood.util.PreferenceHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel

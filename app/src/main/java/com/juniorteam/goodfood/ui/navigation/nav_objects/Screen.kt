@@ -1,4 +1,4 @@
-package com.juniorteam.goodfood.ui.screens.navigation
+package com.juniorteam.goodfood.ui.navigation.nav_objects
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash_screen")

@@ -1,4 +1,4 @@
-package com.juniorteam.goodfood.ui.screens.bottom_nav_bar.products
+package com.juniorteam.goodfood.ui.screens.products
 
 import android.widget.Toast
 import androidx.compose.foundation.Image

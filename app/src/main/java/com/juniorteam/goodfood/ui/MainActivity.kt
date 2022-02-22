@@ -7,10 +7,10 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.ingredients.IngredientsViewModel
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.products.ProductsViewModel
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes.RecipesViewModel
-import com.juniorteam.goodfood.ui.screens.navigation.SetupNavGraph
+import com.juniorteam.goodfood.ui.screens.ingredients.IngredientsViewModel
+import com.juniorteam.goodfood.ui.screens.products.ProductsViewModel
+import com.juniorteam.goodfood.ui.screens.recipes.RecipesViewModel
+import com.juniorteam.goodfood.ui.navigation.SetupNavGraph
 import com.juniorteam.goodfood.ui.theme.AnimatedSplashScreenDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 

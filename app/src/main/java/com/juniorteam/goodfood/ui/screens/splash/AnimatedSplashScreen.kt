@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.juniorteam.goodfood.ui.screens.navigation.Screen
+import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
 import com.juniorteam.goodfood.ui.theme.Purple700
 import kotlinx.coroutines.delay
 

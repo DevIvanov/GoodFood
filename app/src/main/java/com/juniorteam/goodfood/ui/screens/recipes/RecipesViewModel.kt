@@ -1,4 +1,4 @@
-package com.juniorteam.goodfood.ui.screens.bottom_nav_bar.recipes
+package com.juniorteam.goodfood.ui.screens.recipes
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
