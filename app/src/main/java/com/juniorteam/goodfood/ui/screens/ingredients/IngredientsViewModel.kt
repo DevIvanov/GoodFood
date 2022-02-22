@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.juniorteam.data.constants.ApiConstants.DEFAULT_QUERY_RECIPE
+import com.juniorteam.data.constants.ApiConstants.DEFAULT_QUERY_INGREDIENT
 import com.juniorteam.data.repository.SpoonRepositoryImpl
 import com.juniorteam.domain.model.Ingredient
 import com.juniorteam.goodfood.base.BaseViewModel
@@ -18,7 +18,7 @@ class IngredientsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val _query = MutableLiveData<String>().apply {
-        value = DEFAULT_QUERY_RECIPE
+        value = DEFAULT_QUERY_INGREDIENT
     }
 
     fun getIngredientList(): Flow<PagingData<Ingredient>> =

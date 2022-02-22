@@ -10,11 +10,15 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.paging.LoadState
@@ -23,19 +27,32 @@ import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Recipe
 import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
+import com.juniorteam.goodfood.ui.screens.ingredients.SearchToolbar
 
 
 @Composable
 fun RecipesScreen(recipesViewModel: RecipesViewModel,externalNavGraph: NavHostController) {
     Column {
-        RecipesList(recipesViewModel = recipesViewModel,externalNavGraph = externalNavGraph)
+        val textState = remember { mutableStateOf(TextFieldValue("")) }
+        SearchToolbar(state = textState)
+        RecipesList(
+            state = textState,
+            recipesViewModel = recipesViewModel,
+            externalNavGraph = externalNavGraph
+        )
     }
 }
 
 @Composable
-fun RecipesList(modifier: Modifier = Modifier, recipesViewModel: RecipesViewModel,externalNavGraph: NavHostController) {
-    val recipesItems = recipesViewModel.recipesList.collectAsLazyPagingItems()
+fun RecipesList(modifier: Modifier = Modifier, state: MutableState<TextFieldValue>,
+                recipesViewModel: RecipesViewModel,externalNavGraph: NavHostController
+) {
     val context = LocalContext.current
+
+    if (state.value.text != "")
+        recipesViewModel.setQuery(state.value.text)
+
+    val recipesItems = recipesViewModel.getRecipesList().collectAsLazyPagingItems()
 
     LazyColumn {
         items(recipesItems) { item ->

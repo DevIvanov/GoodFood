@@ -92,7 +92,9 @@ fun SearchToolbar(state: MutableState<TextFieldValue>) {
                 leadingIcon = {
                     Icon(Icons.Filled.Search, "")
                 },
-                textStyle = TextStyle(color = MaterialTheme.colors.onSurface)
+                textStyle = TextStyle(
+                    color = MaterialTheme.colors.onSurface
+                )
             )
         }
     }
@@ -103,13 +105,13 @@ fun IngredientsList(modifier: Modifier = Modifier,
                     state: MutableState<TextFieldValue>,
                     ingredientsViewModel: IngredientsViewModel) {
 
+    val context = LocalContext.current
+
     if (state.value.text != "")
         ingredientsViewModel.setQuery(state.value.text)
 
     val ingredientItems = ingredientsViewModel.getIngredientList().collectAsLazyPagingItems()
-
-    val context = LocalContext.current
-
+    
     LazyColumn {
         items(ingredientItems) { item ->
             item?.let {
