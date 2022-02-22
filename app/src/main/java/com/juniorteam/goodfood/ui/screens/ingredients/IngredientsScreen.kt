@@ -1,6 +1,5 @@
 package com.juniorteam.goodfood.ui.screens.ingredients
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -32,6 +31,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.data.constants.ApiConstants.BASE_PATH_IMAGE
+import com.juniorteam.data.constants.ApiConstants.DEFAULT_QUERY_INGREDIENT
 import com.juniorteam.domain.model.Ingredient
 
 
@@ -49,7 +49,7 @@ fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel) {
 fun SearchToolbar(state: MutableState<TextFieldValue>) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
-    var query: TextFieldValue? = null
+    val textState = remember { mutableStateOf(TextFieldValue("")) }
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
@@ -57,12 +57,9 @@ fun SearchToolbar(state: MutableState<TextFieldValue>) {
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             TextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                value = state.value,
-                onValueChange = { value ->
-                    query = value
-                },
+                modifier = Modifier.fillMaxWidth(),
+                value = textState.value,
+                onValueChange = { value -> textState.value = value },
                 label = { Text(text = "Search") },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -71,9 +68,10 @@ fun SearchToolbar(state: MutableState<TextFieldValue>) {
                 keyboardActions = KeyboardActions(
                     onSearch = {
                         focusManager.clearFocus()
-                        if (query != null)
-                            state.value = query!!
-                        else
+                        if (textState.value.text != "") {
+                            Toast.makeText(context, "Search ${textState.value.text}", Toast.LENGTH_SHORT).show()
+                            state.value = textState.value
+                        }else
                             Toast.makeText(context, "Enter text!", Toast.LENGTH_SHORT).show()
                     }
                 ),
@@ -83,79 +81,79 @@ fun SearchToolbar(state: MutableState<TextFieldValue>) {
                 textStyle = TextStyle(color = MaterialTheme.colors.onSurface)
             )
         }
-
     }
 }
 
-    @Composable
-    fun IngredientsList(modifier: Modifier = Modifier,
-                        state: MutableState<TextFieldValue>,
-                        ingredientsViewModel: IngredientsViewModel) {
+@Composable
+fun IngredientsList(modifier: Modifier = Modifier,
+                    state: MutableState<TextFieldValue>,
+                    ingredientsViewModel: IngredientsViewModel) {
 
-        ingredientsViewModel.setQuery(state.value.text)
-        val ingredientItems = ingredientsViewModel.ingredientList.collectAsLazyPagingItems()
-        val context = LocalContext.current
-        Log.d("TAG", "ingredients = $ingredientItems")
+    ingredientsViewModel.setQuery(state.value.text)
 
-        LazyColumn {
-            items(ingredientItems) { item ->
-                item?.let {
-                    IngredientItem(ingredientsData = item, onClick = {
-                        Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
-                    },
-                    )
-                }
+    val ingredientItems = ingredientsViewModel.getIngredientList().collectAsLazyPagingItems()
+
+    val context = LocalContext.current
+
+    LazyColumn {
+        items(ingredientItems) { item ->
+            item?.let {
+                IngredientItem(ingredientsData = item, onClick = {
+                    Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
+                },
+                )
             }
-            ingredientItems.apply {
-                when {
-                    loadState.refresh is LoadState.Loading -> {
-                        //You can add modifier to manage load state when first time response page is loading
-                    }
-                    loadState.append is LoadState.Loading -> {
-                        //You can add modifier to manage load state when next response page is loading
-                    }
-                    loadState.append is LoadState.Error -> {
-                        //You can use modifier to show error message
-                    }
+        }
+        ingredientItems.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    //You can add modifier to manage load state when first time response page is loading
+                }
+                loadState.append is LoadState.Loading -> {
+                    //You can add modifier to manage load state when next response page is loading
+                }
+                loadState.append is LoadState.Error -> {
+                    //You can use modifier to show error message
                 }
             }
         }
     }
+}
 
-    @Composable
-    fun IngredientItem(ingredientsData: Ingredient, onClick: () -> Unit) {
-        Card(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .clickable { onClick() },
-            shape = MaterialTheme.shapes.medium,
-            elevation = 5.dp,
-            backgroundColor = MaterialTheme.colors.surface
+@Composable
+fun IngredientItem(ingredientsData: Ingredient, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .clickable { onClick() },
+        shape = MaterialTheme.shapes.medium,
+        elevation = 5.dp,
+        backgroundColor = MaterialTheme.colors.surface
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                val image = rememberCoilPainter(
-                    request = BASE_PATH_IMAGE + ingredientsData.image,
-                    fadeIn = true
+            val image = rememberCoilPainter(
+                request = BASE_PATH_IMAGE + ingredientsData.image,
+                fadeIn = true
+            )
+            Image(
+                painter = image,
+                contentDescription = null,
+                modifier = Modifier
+                    .height(100.dp)
+                    .clip(shape = RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.Crop
+            )
+            Column(Modifier.padding(8.dp)) {
+                Text(
+                    text = ingredientsData.name,
+                    style = MaterialTheme.typography.h4,
+                    color = MaterialTheme.colors.onSurface,
                 )
-                Image(
-                    painter = image,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .height(100.dp)
-                        .clip(shape = RoundedCornerShape(12.dp)),
-                    contentScale = ContentScale.Crop
-                )
-                Column(Modifier.padding(8.dp)) {
-                    Text(
-                        text = ingredientsData.name,
-                        style = MaterialTheme.typography.h4,
-                        color = MaterialTheme.colors.onSurface,
-                    )
-                }
             }
         }
     }
+}
