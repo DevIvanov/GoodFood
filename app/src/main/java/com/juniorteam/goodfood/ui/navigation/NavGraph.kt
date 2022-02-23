@@ -21,7 +21,7 @@ fun SetupNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route
+        startDestination = Screen.RecipeDetails.route
     ) {
         composable(route = Screen.Splash.route) {
             AnimatedSplashScreen(navController = navController)
@@ -35,7 +35,7 @@ fun SetupNavGraph(
             )
         }
         composable(route = Screen.RecipeDetails.route) {
-            RecipeDetailsScreen()
+            RecipeDetailsScreen(navController = navController)
         }
     }
 }
