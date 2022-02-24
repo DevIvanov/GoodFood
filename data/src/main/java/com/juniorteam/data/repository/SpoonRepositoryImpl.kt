@@ -6,6 +6,9 @@ import com.juniorteam.data.source.remote.api.SpoonApi
 import com.juniorteam.data.source.remote.data.IngredientsPagingSource
 import com.juniorteam.data.source.remote.data.ProductsPagingSource
 import com.juniorteam.data.source.remote.data.RecipesPagingSource
+import com.juniorteam.data.util.safeApiCall
+import com.juniorteam.domain.model.RecipeDetails
+import com.juniorteam.domain.model.result.Result
 import com.juniorteam.domain.repository.SpoonRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,4 +45,8 @@ class SpoonRepositoryImpl @Inject constructor(private val api: SpoonApi): SpoonR
             ),
             pagingSourceFactory = { ProductsPagingSource(api, query) }
         ).flow
+
+    override suspend fun getRecipeById(id: String): Result<RecipeDetails> {
+        return safeApiCall { api.getRecipeById(id) }
+    }
 }

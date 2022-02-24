@@ -29,9 +29,10 @@ interface SpoonApi {
         @Query(ApiConstants.QUERY_QUERY) query: String,
     ): ProductsResponse
 
-    @GET(ApiConstants.GET_PRODUCT_BY_ID)
-    suspend fun getProductById(
+    @GET(ApiConstants.GET_RECIPE_BY_ID)
+    suspend fun getRecipeById(
         @Path("id") id:String,
         @Query(ApiConstants.QUERY_API_KEY) apiKey: String = ApiConstants.API_KEY_VALUE
     ): RecipeDetails
+
 }

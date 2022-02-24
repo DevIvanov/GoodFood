@@ -1,4 +1,4 @@
-package com.juniorteam.goodfood.ui.screens.bottom_nav_bar.navigation_bottom_bar
+package com.juniorteam.goodfood.ui.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -65,7 +65,7 @@ fun NavigationBottomBar(
             }
         }
     ) { innerPadding ->
-        NavHost(navController, startDestination = ScreenNavBar.Ingredients.route, Modifier.padding(innerPadding)) {
+        NavHost(navController, startDestination = ScreenNavBar.Recipes.route, Modifier.padding(innerPadding)) {
             composable(ScreenNavBar.Recipes.route) { RecipesScreen(recipesViewModel = recipesViewModel,externalNavGraph = externalNavGraph) }
             composable(ScreenNavBar.Ingredients.route) { IngredientsScreen(ingredientsViewModel = ingredientsViewModel)}
             composable(ScreenNavBar.Products.route){ ProductsScreen(productsViewModel = productsViewModel) }

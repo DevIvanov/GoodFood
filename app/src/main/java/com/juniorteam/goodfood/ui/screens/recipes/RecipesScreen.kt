@@ -20,6 +20,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.os.bundleOf
 import androidx.navigation.NavHostController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -27,15 +29,19 @@ import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Recipe
 import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
-import com.juniorteam.goodfood.ui.screens.ingredients.SearchToolbar
-import java.util.*
+import com.juniorteam.goodfood.ui.navigation.navigate
+import com.juniorteam.goodfood.ui.widgets.SearchToolbar
 
 
 @Composable
 fun RecipesScreen(recipesViewModel: RecipesViewModel,externalNavGraph: NavHostController) {
     Column {
+        val context = LocalContext.current
+
         val textState = remember { mutableStateOf(TextFieldValue("")) }
-        SearchToolbar(state = textState)
+        SearchToolbar(state = textState, onClick = {
+            Toast.makeText(context, "side bar", Toast.LENGTH_SHORT).show()
+        })
         RecipesList(
             state = textState,
             recipesViewModel = recipesViewModel,
@@ -60,9 +66,9 @@ fun RecipesList(modifier: Modifier = Modifier, state: MutableState<TextFieldValu
             item?.let {
                 RecipeItem(recipesData = item, onClick = {
                     Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
-                    externalNavGraph.navigate(Screen.RecipeDetails.route)
-                                                         },
-                )
+                    val argument = item.id.toString()
+                    externalNavGraph.navigate(Screen.RecipeDetails.route, bundleOf("id" to argument))
+                })
             }
         }
         recipesItems.apply {
@@ -106,13 +112,14 @@ fun RecipeItem(recipesData: Recipe, onClick: () -> Unit) {
                 modifier = Modifier
                     .height(100.dp)
                     .clip(shape = RoundedCornerShape(12.dp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Inside
             )
             Column(Modifier.padding(8.dp)) {
                 Text(
                     text = recipesData.title,
                     style = MaterialTheme.typography.h4,
                     color = MaterialTheme.colors.onSurface,
+                    fontSize = 18.sp
                 )
             }
         }

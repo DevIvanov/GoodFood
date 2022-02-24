@@ -11,6 +11,7 @@ import com.juniorteam.goodfood.ui.screens.ingredients.IngredientsViewModel
 import com.juniorteam.goodfood.ui.screens.products.ProductsViewModel
 import com.juniorteam.goodfood.ui.screens.recipes.RecipesViewModel
 import com.juniorteam.goodfood.ui.navigation.SetupNavGraph
+import com.juniorteam.goodfood.ui.screens.recipe_details.RecipeDetailsViewModel
 import com.juniorteam.goodfood.ui.theme.AnimatedSplashScreenDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,6 +21,8 @@ class MainActivity : ComponentActivity() {
     private val recipesViewModel: RecipesViewModel by viewModels()
     private val ingredientsViewModel: IngredientsViewModel by viewModels()
     private val productsViewModel: ProductsViewModel by viewModels()
+
+    private val recipeDetailsViewModel: RecipeDetailsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +34,8 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     recipesViewModel = recipesViewModel,
                     ingredientsViewModel = ingredientsViewModel,
-                    productsViewModel = productsViewModel
+                    productsViewModel = productsViewModel,
+                    recipeDetailsViewModel = recipeDetailsViewModel
                 )
             }
         }
@@ -43,4 +47,3 @@ class MainActivity : ComponentActivity() {
 
     }
 }
-

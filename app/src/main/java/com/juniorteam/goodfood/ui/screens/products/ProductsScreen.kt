@@ -25,14 +25,17 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Product
-import com.juniorteam.goodfood.ui.screens.ingredients.SearchToolbar
+import com.juniorteam.goodfood.ui.widgets.SearchToolbar
 
 
 @Composable
 fun ProductsScreen(productsViewModel: ProductsViewModel) {
+    val context = LocalContext.current
     Column {
         val textState = remember { mutableStateOf(TextFieldValue("")) }
-        SearchToolbar(state = textState)
+        SearchToolbar(state = textState, onClick = {
+            Toast.makeText(context, "side bar", Toast.LENGTH_SHORT).show()
+        })
         ProductsList(state = textState, productViewModel = productsViewModel)
     }
 }

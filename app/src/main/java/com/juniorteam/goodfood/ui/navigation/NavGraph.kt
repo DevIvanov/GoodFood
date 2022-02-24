@@ -5,11 +5,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.juniorteam.goodfood.ui.screens.ingredients.IngredientsViewModel
-import com.juniorteam.goodfood.ui.screens.bottom_nav_bar.navigation_bottom_bar.NavigationBottomBar
 import com.juniorteam.goodfood.ui.screens.products.ProductsViewModel
 import com.juniorteam.goodfood.ui.screens.recipes.RecipesViewModel
 import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
 import com.juniorteam.goodfood.ui.screens.recipe_details.RecipeDetailsScreen
+import com.juniorteam.goodfood.ui.screens.recipe_details.RecipeDetailsViewModel
 import com.juniorteam.goodfood.ui.screens.splash.AnimatedSplashScreen
 
 @Composable
@@ -17,11 +17,12 @@ fun SetupNavGraph(
     navController: NavHostController,
     recipesViewModel: RecipesViewModel,
     ingredientsViewModel: IngredientsViewModel,
-    productsViewModel: ProductsViewModel
+    productsViewModel: ProductsViewModel,
+    recipeDetailsViewModel: RecipeDetailsViewModel
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.RecipeDetails.route
+        startDestination = Screen.Splash.route
     ) {
         composable(route = Screen.Splash.route) {
             AnimatedSplashScreen(navController = navController)
@@ -35,7 +36,7 @@ fun SetupNavGraph(
             )
         }
         composable(route = Screen.RecipeDetails.route) {
-            RecipeDetailsScreen(navController = navController)
+            RecipeDetailsScreen().RecipeDetailsScreen(recipeDetailsViewModel = recipeDetailsViewModel, navController = navController)
         }
     }
 }

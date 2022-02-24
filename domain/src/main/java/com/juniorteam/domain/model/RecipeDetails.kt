@@ -9,12 +9,12 @@ data class RecipeDetails(
     val title: String,
     val image: String,
     val readyInMinutes: Int,
-    val sourceUrl: String,
-    val glutenFree:Boolean,
-    val vegan:Boolean,
-    val vegetarian:Boolean,
-    val product: List<ProductForDetails>,
-    val winePairing: WinePairing
+    val sourceUrl: String?,
+    val glutenFree: Boolean,
+    val vegan: Boolean,
+    val vegetarian: Boolean,
+    val product: List<ProductForDetails>?,
+    val winePairing: WinePairing?
 ) : Parcelable {
     @Parcelize
     data class ProductForDetails(
