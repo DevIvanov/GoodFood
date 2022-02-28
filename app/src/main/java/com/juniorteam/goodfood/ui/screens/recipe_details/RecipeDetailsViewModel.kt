@@ -9,8 +9,15 @@ import com.juniorteam.domain.model.RecipeDetails
 import com.juniorteam.domain.model.result.onError
 import com.juniorteam.domain.model.result.onSuccess
 import com.juniorteam.goodfood.base.BaseViewModel
+import com.juniorteam.goodfood.di.OkHttp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
+import okhttp3.Call
+import okhttp3.Headers
+import okhttp3.Response
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,7 +58,6 @@ class RecipeDetailsViewModel @Inject constructor(
         )
     }
 
-
     fun getRecipeById(id: String) {
         viewModelScope.launchWithLoading {
             repository.getRecipeById(id)
@@ -62,6 +68,12 @@ class RecipeDetailsViewModel @Inject constructor(
                 .onError {
                     error.emit(it)
                     Log.e(tag, "error = $it")}
+        }
+    }
+
+    fun getHeaders() {
+        viewModelScope.launch(Dispatchers.IO) {
+            OkHttp().run()
         }
     }
 }

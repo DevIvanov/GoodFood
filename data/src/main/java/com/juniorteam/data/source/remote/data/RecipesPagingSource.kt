@@ -24,6 +24,7 @@ class RecipesPagingSource(
             val response = api.getRecipes(query = query)
             val recipes = response.results
             total = response.totalResults.toString()
+            Log.i(tag, "recipes response = $response")
 
             LoadResult.Page(
                 data = recipes,

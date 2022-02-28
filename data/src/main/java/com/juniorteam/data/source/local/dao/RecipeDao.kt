@@ -11,13 +11,13 @@ interface RecipeDao {
     @Query(QUERY_READ_RECIPES)
     fun readAllData(): Flow<List<RecipeEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: RecipeEntity)
 
     @Delete
     fun delete(item: RecipeEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(items: List<RecipeEntity>)
 
     @Query(QUERY_DELETE_RECIPES)

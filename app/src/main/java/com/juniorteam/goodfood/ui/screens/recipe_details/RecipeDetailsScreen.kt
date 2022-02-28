@@ -36,6 +36,7 @@ class RecipeDetailsScreen {
     private val tag = RecipeDetailsScreen::class.java.simpleName
     private lateinit var data: RecipeDetails
 
+//    private val
     @Composable
     fun RecipeDetailsScreen(recipeDetailsViewModel: RecipeDetailsViewModel, navController: NavController) {
         val context = LocalContext.current
@@ -49,6 +50,7 @@ class RecipeDetailsScreen {
 
 //    val data = recipeDetailsViewModel.recipe.resetReplayCache()
         data = recipeDetailsViewModel.recipe.value!!
+//        recipeDetailsViewModel.getHeaders()
 
         Column {
             Toolbar {

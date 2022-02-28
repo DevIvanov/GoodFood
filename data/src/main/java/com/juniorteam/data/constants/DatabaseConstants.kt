@@ -16,4 +16,5 @@ object DatabaseConstants {
 
     const val QUERY_READ_PRODUCTS = "SELECT * FROM $PRODUCTS_TABLE ORDER BY id ASC"
     const val QUERY_DELETE_PRODUCTS = "DELETE FROM $PRODUCTS_TABLE"
+
 }

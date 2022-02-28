@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class GetRecipeByIdUseCase @Inject constructor(private val repository: SpoonRepository) {
 
-    suspend fun getRecipeById(id: String) : Result<RecipeDetails> {
-        return repository.getRecipeById(id)
-    }
+//    suspend fun getRecipeById(id: String) : Result<RecipeDetails> {
+//        return repository.getRecipeById(id)
+//    }
 }
