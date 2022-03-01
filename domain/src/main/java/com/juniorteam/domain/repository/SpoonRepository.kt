@@ -1,13 +1,14 @@
 package com.juniorteam.domain.repository
 
-import androidx.paging.PagingData
-import com.juniorteam.domain.model.*
+import com.juniorteam.domain.model.IngredientsResponse
+import com.juniorteam.domain.model.ProductsResponse
+import com.juniorteam.domain.model.RecipeDetails
+import com.juniorteam.domain.model.RecipesResponse
 import com.juniorteam.domain.model.result.Result
-import kotlinx.coroutines.flow.Flow
 
 interface SpoonRepository {
     suspend fun getRecipesResults(query: String) : Result<RecipesResponse>
-    fun getIngredientsResults(query: String) : Flow<PagingData<Ingredient>>
-    fun getProductsResults(query: String) : Flow<PagingData<Product>>
+    suspend fun getIngredientsResults(query: String) : Result<IngredientsResponse>
+    suspend fun getProductsResults(query: String) : Result<ProductsResponse>
     suspend fun getRecipeById(id: String) : Result<RecipeDetails>
 }

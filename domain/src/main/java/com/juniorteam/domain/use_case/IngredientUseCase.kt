@@ -12,7 +12,7 @@ class IngredientUseCase @Inject constructor(private val repository: DatabaseRepo
         return repository.readAll()
     }
 
-    suspend fun insert (item: Ingredient) {
+    suspend fun insert(item: Ingredient) {
         repository.insert(item)
     }
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -20,16 +21,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.data.constants.ApiConstants.BASE_PATH_IMAGE
 import com.juniorteam.domain.model.Ingredient
 import com.juniorteam.goodfood.R
-import com.juniorteam.goodfood.ui.widgets.SearchToolbar
+import com.juniorteam.goodfood.ui.views.SearchToolbar
 
 
 @Composable
@@ -45,38 +42,39 @@ fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel) {
 }
 
 
-
 @Composable
-fun IngredientsList(modifier: Modifier = Modifier,
-                    state: MutableState<TextFieldValue>,
-                    ingredientsViewModel: IngredientsViewModel) {
+fun IngredientsList(
+    modifier: Modifier = Modifier,
+    state: MutableState<TextFieldValue>,
+    ingredientsViewModel: IngredientsViewModel
+) {
 
+    ingredientsViewModel.getIngredientList()
     val context = LocalContext.current
 
     if (state.value.text != "")
         ingredientsViewModel.setQuery(state.value.text)
 
-    val ingredientItems = ingredientsViewModel.getIngredientList().collectAsLazyPagingItems()
-    
-    LazyColumn {
-        items(ingredientItems) { item ->
-            item?.let {
-                IngredientItem(ingredientsData = item, onClick = {
-                    Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
-                },
-                )
-            }
-        }
-        ingredientItems.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    //You can add modifier to manage load state when first time response page is loading
-                }
-                loadState.append is LoadState.Loading -> {
-                    //You can add modifier to manage load state when next response page is loading
-                }
-                loadState.append is LoadState.Error -> {
-                    //You can use modifier to show error message
+    val ingredientItems = ingredientsViewModel.ingredientList
+
+    if (ingredientItems == null) {
+        Text(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.Center),
+            text = "Data is empty!"
+        )
+    }else {
+        LazyColumn {
+            items(ingredientItems) { item ->
+                item.let {
+                    IngredientItem(
+                        ingredientsData = item,
+                        onClick = {
+                            Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
+                        },
+                    )
                 }
             }
         }
@@ -84,7 +82,7 @@ fun IngredientsList(modifier: Modifier = Modifier,
 }
 
 @Composable
-fun IngredientItem(ingredientsData: Ingredient, onClick: () -> Unit) { //
+fun IngredientItem(ingredientsData: Ingredient, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(10.dp)
@@ -126,13 +124,11 @@ fun IngredientItem(ingredientsData: Ingredient, onClick: () -> Unit) { //
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
                 elevation = null
             ) {
-                Icon(painterResource(R.drawable.ic_favorite_border), contentDescription = "Like icon")
+                Icon(
+                    painterResource(R.drawable.ic_favorite_border),
+                    contentDescription = "Like icon"
+                )
             }
         }
     }
 }
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    IngredientItem()
-//}

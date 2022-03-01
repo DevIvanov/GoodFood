@@ -24,21 +24,16 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
-import androidx.lifecycle.asLiveData
 import androidx.navigation.NavHostController
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Recipe
 import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
 import com.juniorteam.goodfood.ui.navigation.navigate
-import com.juniorteam.goodfood.ui.widgets.SearchToolbar
-import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
+import com.juniorteam.goodfood.ui.views.SearchToolbar
 
 
 @Composable
-fun RecipesScreen(recipesViewModel: RecipesViewModel,externalNavGraph: NavHostController) {
+fun RecipesScreen(recipesViewModel: RecipesViewModel, externalNavGraph: NavHostController) {
     Column {
         val context = LocalContext.current
 
@@ -55,13 +50,14 @@ fun RecipesScreen(recipesViewModel: RecipesViewModel,externalNavGraph: NavHostCo
 }
 
 @Composable
-fun RecipesList(modifier: Modifier = Modifier, state: MutableState<TextFieldValue>,
-                recipesViewModel: RecipesViewModel,externalNavGraph: NavHostController
+fun RecipesList(
+    modifier: Modifier = Modifier, state: MutableState<TextFieldValue>,
+    recipesViewModel: RecipesViewModel, externalNavGraph: NavHostController
 ) {
     Log.e("RecipesList", "RecipesList was called!")
     val context = LocalContext.current
 
-    if (state.value.text != ""){ // TODO when first launch application
+    if (state.value.text != "") { // TODO when first launch application
         recipesViewModel.getRecipesList()
         recipesViewModel.setQuery(state.value.text)
         Log.e("RecipesList", "Network response!")
@@ -73,14 +69,16 @@ fun RecipesList(modifier: Modifier = Modifier, state: MutableState<TextFieldValu
 
     val recipesItems = recipesViewModel.recipesList
 
-//    val recipesItems = listOf<Recipe>(Recipe(23, "#23", "FArfaw", "Af"))
 
-    if (recipesItems == null){
-        Text(modifier = Modifier.fillMaxHeight()
-            .fillMaxWidth()
-            .wrapContentSize(Alignment.Center),
-            text = "Data is empty!")
-    }else{
+    if (recipesItems == null) {
+        Text(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.Center),
+            text = "Data is empty!"
+        )
+    } else {
         LazyColumn {
             items(recipesItems) { item ->
                 item.let {
@@ -135,3 +133,16 @@ fun RecipeItem(recipesData: Recipe, onClick: () -> Unit) {
         }
     }
 }
+
+//private fun setRecyclerViewScrollListener() {
+//    binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//            super.onScrollStateChanged(recyclerView, newState)
+//            val totalItemCount = recyclerView.layoutManager!!.itemCount
+//            if (totalItemCount == lastVisibleItemPosition + 1) {
+//                viewModel.getPhotos()
+//            }
+//        }
+//    })
+//}
+

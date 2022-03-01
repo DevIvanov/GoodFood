@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -20,12 +21,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Product
-import com.juniorteam.goodfood.ui.widgets.SearchToolbar
+import com.juniorteam.goodfood.ui.views.SearchToolbar
 
 
 @Composable
@@ -43,32 +41,34 @@ fun ProductsScreen(productsViewModel: ProductsViewModel) {
 @Composable
 fun ProductsList(modifier: Modifier = Modifier, state:MutableState<TextFieldValue>,
                  productViewModel: ProductsViewModel) {
+
+    productViewModel.getProductList()
+
     val context = LocalContext.current
 
     if (state.value.text != "")
         productViewModel.setQuery(state.value.text)
 
-    val productItems = productViewModel.getProductList().collectAsLazyPagingItems()
+    val productItems = productViewModel.productList
 
-    LazyColumn {
-        items(productItems) { item ->
-            item?.let {
-                ProductItem(productData = item, onClick = {
-                    Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
-                },
-                )
-            }
-        }
-        productItems.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    //You can add modifier to manage load state when first time response page is loading
-                }
-                loadState.append is LoadState.Loading -> {
-                    //You can add modifier to manage load state when next response page is loading
-                }
-                loadState.append is LoadState.Error -> {
-                    //You can use modifier to show error message
+    if (productItems == null) {
+        Text(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.Center),
+            text = "Data is empty!"
+        )
+    }else {
+        LazyColumn {
+            items(productItems) { item ->
+                item.let {
+                    ProductItem(
+                        productData = item,
+                        onClick = {
+                            Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
+                        },
+                    )
                 }
             }
         }

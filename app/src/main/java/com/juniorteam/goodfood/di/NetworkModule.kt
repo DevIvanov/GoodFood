@@ -14,6 +14,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 import javax.inject.Singleton
 
 @Module
@@ -33,6 +34,7 @@ object NetworkModule {
     fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
         val client = OkHttpClient().newBuilder()
             .addInterceptor(ChuckInterceptor(context))
+            .addInterceptor(HeaderInterceptor())
             .build()
 
 
@@ -45,7 +47,7 @@ object NetworkModule {
 //            Log.e(tag, "Quota-Request: ${response.header("X-API-Quota-Request")}")
 //            Log.e(tag, "Quota-Used: ${response.header("X-API-Quota-Used")}")
 //            Log.e(tag, "Quota-Left: ${response.header("X-API-Quota-Left")}")
-//        }
+//    }
 
         return client
     }

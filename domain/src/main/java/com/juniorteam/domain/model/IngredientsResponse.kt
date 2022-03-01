@@ -1,6 +1,4 @@
-package com.juniorteam.data.source.remote.api
-
-import com.juniorteam.domain.model.Ingredient
+package com.juniorteam.domain.model
 
 data class IngredientsResponse(
     val results : List<Ingredient>,

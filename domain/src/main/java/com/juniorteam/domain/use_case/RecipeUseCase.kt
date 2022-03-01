@@ -12,7 +12,7 @@ class RecipeUseCase @Inject constructor(private val repository: DatabaseReposito
         return repository.readAll()
     }
 
-    suspend fun insert (item: Recipe) {
+    suspend fun insert(item: Recipe) {
         repository.insert(item)
     }
 

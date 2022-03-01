@@ -1,6 +1,8 @@
 package com.juniorteam.data.source.remote.api
 
 import com.juniorteam.data.constants.ApiConstants
+import com.juniorteam.domain.model.IngredientsResponse
+import com.juniorteam.domain.model.ProductsResponse
 import com.juniorteam.domain.model.RecipeDetails
 import com.juniorteam.domain.model.RecipesResponse
 import retrofit2.http.GET
@@ -34,7 +36,7 @@ interface SpoonApi {
 
     @GET(ApiConstants.GET_RECIPE_BY_ID)
     suspend fun getRecipeById(
-        @Path("id") id:String,
+        @Path("id") id: String,
         @Query(ApiConstants.QUERY_API_KEY) apiKey: String = ApiConstants.API_KEY_VALUE
     ): RecipeDetails
 }
