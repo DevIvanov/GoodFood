@@ -13,13 +13,13 @@ class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val requestBuilder = request.newBuilder()
-        var body: ResponseBody? = null
-        var headers: Headers? = null
+        var body: ResponseBody?
+        var headers: Headers?
 
         chain.proceed(requestBuilder.build()).use {
-                body = it.body()
-                headers = it.headers()
-            }
+            body = it.body()
+            headers = it.headers()
+        }
         Log.e(tag, "body = $body\nheaders = $headers")
 
         return chain.proceed(requestBuilder.build())

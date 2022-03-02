@@ -1,4 +1,4 @@
-package com.juniorteam.goodfood.ui.navigation
+package com.juniorteam.goodfood.ui.navigation.navigate_extensions
 
 import android.os.Bundle
 import android.os.Parcelable

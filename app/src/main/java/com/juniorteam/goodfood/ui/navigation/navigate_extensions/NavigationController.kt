@@ -1,4 +1,4 @@
-package com.juniorteam.goodfood.ui.navigation
+package com.juniorteam.goodfood.ui.navigation.navigate_extensions
 
 import android.os.Bundle
 import androidx.compose.runtime.Composable
@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.juniorteam.goodfood.ui.navigation.Router
 
 @Composable
 fun NavigationController(

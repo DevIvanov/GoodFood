@@ -8,6 +8,10 @@ import com.juniorteam.goodfood.ui.screens.ingredients.IngredientsViewModel
 import com.juniorteam.goodfood.ui.screens.products.ProductsViewModel
 import com.juniorteam.goodfood.ui.screens.recipes.RecipesViewModel
 import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
+import com.juniorteam.goodfood.ui.screens.ingredient_details.IngredientDetailsScreen
+import com.juniorteam.goodfood.ui.screens.ingredient_details.IngredientDetailsViewModel
+import com.juniorteam.goodfood.ui.screens.product_details.ProductDetailsScreen
+import com.juniorteam.goodfood.ui.screens.product_details.ProductDetailsViewModel
 import com.juniorteam.goodfood.ui.screens.recipe_details.RecipeDetailsScreen
 import com.juniorteam.goodfood.ui.screens.recipe_details.RecipeDetailsViewModel
 import com.juniorteam.goodfood.ui.screens.splash.AnimatedSplashScreen
@@ -18,7 +22,9 @@ fun SetupNavGraph(
     recipesViewModel: RecipesViewModel,
     ingredientsViewModel: IngredientsViewModel,
     productsViewModel: ProductsViewModel,
-    recipeDetailsViewModel: RecipeDetailsViewModel
+    recipeDetailsViewModel: RecipeDetailsViewModel,
+    ingredientDetailsViewModel: IngredientDetailsViewModel,
+    productDetailsViewModel: ProductDetailsViewModel
 ) {
     NavHost(
         navController = navController,
@@ -37,6 +43,12 @@ fun SetupNavGraph(
         }
         composable(route = Screen.RecipeDetails.route) {
             RecipeDetailsScreen().RecipeDetailsScreen(recipeDetailsViewModel = recipeDetailsViewModel, navController = navController)
+        }
+        composable(route = Screen.IngredientDetails.route) {
+            IngredientDetailsScreen().IngredientDetailsScreen(ingredientDetailsViewModel = ingredientDetailsViewModel, navController = navController)
+        }
+        composable(route = Screen.ProductDetails.route) {
+            ProductDetailsScreen().ProductDetailsScreen(productDetailsViewModel = productDetailsViewModel, navController = navController)
         }
     }
 }

@@ -21,27 +21,34 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import androidx.navigation.NavHostController
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Product
+import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
+import com.juniorteam.goodfood.ui.navigation.navigate_extensions.navigate
 import com.juniorteam.goodfood.ui.views.SearchToolbar
 
 
 @Composable
-fun ProductsScreen(productsViewModel: ProductsViewModel) {
+fun ProductsScreen(productsViewModel: ProductsViewModel, externalNavGraph: NavHostController) {
     val context = LocalContext.current
     Column {
         val textState = remember { mutableStateOf(TextFieldValue("")) }
         SearchToolbar(state = textState, onClick = {
             Toast.makeText(context, "side bar", Toast.LENGTH_SHORT).show()
         })
-        ProductsList(state = textState, productViewModel = productsViewModel)
+        ProductsList(state = textState,
+            productViewModel = productsViewModel,
+            externalNavGraph = externalNavGraph
+        )
     }
 }
 
 @Composable
 fun ProductsList(modifier: Modifier = Modifier, state:MutableState<TextFieldValue>,
-                 productViewModel: ProductsViewModel) {
-
+                 productViewModel: ProductsViewModel, externalNavGraph: NavHostController
+) {
     productViewModel.getProductList()
 
     val context = LocalContext.current
@@ -65,9 +72,13 @@ fun ProductsList(modifier: Modifier = Modifier, state:MutableState<TextFieldValu
                 item.let {
                     ProductItem(
                         productData = item,
-                        onClick = {
-                            Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
-                        },
+                        onClick =  {
+                            val argument = item.id.toString()
+                            externalNavGraph.navigate(
+                                Screen.ProductDetails.route,
+                                bundleOf("id" to argument)
+                            )
+                        }
                     )
                 }
             }

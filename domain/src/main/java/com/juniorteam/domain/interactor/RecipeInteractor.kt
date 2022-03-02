@@ -13,10 +13,10 @@ class RecipeInteractor @Inject constructor(
 ) {
 
     suspend fun getRecipeList(query: String): Result<RecipesResponse> {
-        return getRecipeListUseCase.getRecipeList(query = query)
+        return getRecipeListUseCase.getRecipeList(query)
     }
 
     suspend fun getRecipeById(id: String): Result<RecipeDetails> {
-        return getRecipeByIdUseCase.getRecipeById(id = id)
+        return getRecipeByIdUseCase.getRecipeById(id)
     }
 }

@@ -22,22 +22,26 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.data.constants.ApiConstants.BASE_PATH_IMAGE
 import com.juniorteam.domain.model.Ingredient
 import com.juniorteam.goodfood.R
+import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
+import com.juniorteam.goodfood.ui.navigation.navigate_extensions.navigate
 import com.juniorteam.goodfood.ui.views.SearchToolbar
 
 
 @Composable
-fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel) {
+fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel, externalNavGraph: NavController) {
     val context = LocalContext.current
     Column {
         val textState = remember { mutableStateOf(TextFieldValue("")) }
         SearchToolbar(state = textState, onClick = {
             Toast.makeText(context, "side bar", Toast.LENGTH_SHORT).show()
         })
-        IngredientsList(state = textState, ingredientsViewModel = ingredientsViewModel)
+        IngredientsList(state = textState, ingredientsViewModel = ingredientsViewModel, externalNavGraph = externalNavGraph)
     }
 }
 
@@ -46,7 +50,8 @@ fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel) {
 fun IngredientsList(
     modifier: Modifier = Modifier,
     state: MutableState<TextFieldValue>,
-    ingredientsViewModel: IngredientsViewModel
+    ingredientsViewModel: IngredientsViewModel,
+    externalNavGraph: NavController
 ) {
 
     ingredientsViewModel.getIngredientList()
@@ -72,9 +77,12 @@ fun IngredientsList(
                     IngredientItem(
                         ingredientsData = item,
                         onClick = {
-                            Toast.makeText(context, item.id.toString(), Toast.LENGTH_SHORT).show()
-                        },
-                    )
+                            val argument = item.id.toString()
+                            externalNavGraph.navigate(
+                                Screen.IngredientDetails.route,
+                                bundleOf("id" to argument)
+                            )
+                        })
                 }
             }
         }

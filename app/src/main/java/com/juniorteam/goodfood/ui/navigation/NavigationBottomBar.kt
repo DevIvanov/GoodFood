@@ -66,9 +66,9 @@ fun NavigationBottomBar(
         }
     ) { innerPadding ->
         NavHost(navController, startDestination = ScreenNavBar.Recipes.route, Modifier.padding(innerPadding)) {
-            composable(ScreenNavBar.Recipes.route) { RecipesScreen(recipesViewModel = recipesViewModel,externalNavGraph = externalNavGraph) }
-            composable(ScreenNavBar.Ingredients.route) { IngredientsScreen(ingredientsViewModel = ingredientsViewModel)}
-            composable(ScreenNavBar.Products.route){ ProductsScreen(productsViewModel = productsViewModel) }
+            composable(ScreenNavBar.Recipes.route) { RecipesScreen(recipesViewModel = recipesViewModel, externalNavGraph = externalNavGraph) }
+            composable(ScreenNavBar.Ingredients.route) { IngredientsScreen(ingredientsViewModel = ingredientsViewModel, externalNavGraph = externalNavGraph)}
+            composable(ScreenNavBar.Products.route){ ProductsScreen(productsViewModel = productsViewModel, externalNavGraph = externalNavGraph) }
         }
     }
 }

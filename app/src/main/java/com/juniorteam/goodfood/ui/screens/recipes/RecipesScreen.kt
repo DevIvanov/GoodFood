@@ -28,15 +28,14 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.coil.rememberCoilPainter
 import com.juniorteam.domain.model.Recipe
 import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
-import com.juniorteam.goodfood.ui.navigation.navigate
+import com.juniorteam.goodfood.ui.navigation.navigate_extensions.navigate
 import com.juniorteam.goodfood.ui.views.SearchToolbar
 
 
 @Composable
 fun RecipesScreen(recipesViewModel: RecipesViewModel, externalNavGraph: NavHostController) {
+    val context = LocalContext.current
     Column {
-        val context = LocalContext.current
-
         val textState = remember { mutableStateOf(TextFieldValue("")) }
         SearchToolbar(state = textState, onClick = {
             Toast.makeText(context, "side bar", Toast.LENGTH_SHORT).show()
@@ -56,15 +55,15 @@ fun RecipesList(
 ) {
     Log.e("RecipesList", "RecipesList was called!")
     val context = LocalContext.current
-
+    recipesViewModel.getRecipesList()
     if (state.value.text != "") { // TODO when first launch application
-        recipesViewModel.getRecipesList()
+//        recipesViewModel.getRecipesList()
         recipesViewModel.setQuery(state.value.text)
-        Log.e("RecipesList", "Network response!")
-    } else {
-        recipesViewModel.readAllData()
-        Log.e("RecipesList", "Database response!")
-        Toast.makeText(context, "Data from database!", Toast.LENGTH_SHORT).show()
+//        Log.e("RecipesList", "Network response!")
+//    } else {
+//        recipesViewModel.readAllData()
+//        Log.e("RecipesList", "Database response!")
+//        Toast.makeText(context, "Data from database!", Toast.LENGTH_SHORT).show()
     }
 
     val recipesItems = recipesViewModel.recipesList
