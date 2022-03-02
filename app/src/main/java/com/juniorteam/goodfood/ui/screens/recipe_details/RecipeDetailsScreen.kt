@@ -34,9 +34,8 @@ import java.lang.Exception
 
 class RecipeDetailsScreen {
     private val tag = RecipeDetailsScreen::class.java.simpleName
-    private lateinit var data: RecipeDetails
+    private var data: RecipeDetails? = null
 
-//    private val
     @Composable
     fun RecipeDetailsScreen(recipeDetailsViewModel: RecipeDetailsViewModel, navController: NavController) {
         val context = LocalContext.current
@@ -48,36 +47,45 @@ class RecipeDetailsScreen {
             Log.e(tag, e.message.toString())
         }
 
-//    val data = recipeDetailsViewModel.recipe.resetReplayCache()
-        data = recipeDetailsViewModel.recipe.value!!
-//        recipeDetailsViewModel.getHeaders()
+        data = recipeDetailsViewModel.recipeState
 
-        Column {
-            Toolbar {
-                navController.navigateUp()
-            }
-
-            LazyColumn(
-                content = {
-                    item {
-                        RecipeMainImage()
-                    }
-                    item {
-                        RecipeReadyTime()
-                    }
-                    item {
-                        RecipeCharacteristic()
-                    }
-                    item {
-                        RecipeSourceLink {
-                            Toast.makeText(context, "Link open", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                },
-                modifier = Modifier.fillMaxSize()
+        if (data == null) {
+            Text(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.Center),
+                text = "Data is empty!"
             )
+        }else{
+            Column {
+                Toolbar {
+                    navController.navigateUp()
+                }
+
+                LazyColumn(
+                    content = {
+                        item {
+                            RecipeMainImage()
+                        }
+                        item {
+                            RecipeReadyTime()
+                        }
+                        item {
+                            RecipeCharacteristic()
+                        }
+                        item {
+                            RecipeSourceLink {
+                                Toast.makeText(context, "Link open", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
+
 
     @Composable
     fun Toolbar(onClick: () -> Unit) {
@@ -100,7 +108,7 @@ class RecipeDetailsScreen {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back icon")
             }
             Text(
-                text = data.title,
+                text = data!!.title,
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.8f)
                     .align(alignment = Alignment.CenterVertically),
@@ -118,7 +126,7 @@ class RecipeDetailsScreen {
                 .padding(8.dp)
         ) {
             val image = rememberCoilPainter(
-                request = data.image,
+                request = data!!.image,
                 fadeIn = true,
                 previewPlaceholder = R.drawable.dish,
                 fadeInDurationMs = 500
@@ -150,7 +158,7 @@ class RecipeDetailsScreen {
                     .align(Alignment.CenterVertically)
             )
             Text(
-                text = data.readyInMinutes.toString(),
+                text = data!!.readyInMinutes.toString(),
                 fontSize = 30.sp,
                 modifier = Modifier
                     .align(alignment = Alignment.CenterVertically)
@@ -169,7 +177,7 @@ class RecipeDetailsScreen {
         Column(modifier = Modifier.padding(bottom = 10.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Image(
-                    painter = getImage(data.glutenFree),
+                    painter = getImage(data!!.glutenFree),
                     contentDescription = "gluten icon",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
@@ -188,7 +196,7 @@ class RecipeDetailsScreen {
             }
             Row(modifier = Modifier.fillMaxWidth()) {
                 Image(
-                    painter = getImage(data.vegan),
+                    painter = getImage(data!!.vegan),
                     contentDescription = "vegan icon",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
@@ -207,7 +215,7 @@ class RecipeDetailsScreen {
             }
             Row(modifier = Modifier.fillMaxWidth()) {
                 Image(
-                    painter = getImage(data.vegetarian),
+                    painter = getImage(data!!.vegetarian),
                     contentDescription = "vegetarian icon",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
@@ -261,7 +269,7 @@ class RecipeDetailsScreen {
 
     @Composable
     fun getImage(isTrue: Boolean): Painter {
-        return if (data.glutenFree)
+        return if (data!!.glutenFree)
             painterResource(id = R.drawable.ic_done_icon)
         else
             painterResource(id = R.drawable.ic_close_icon)

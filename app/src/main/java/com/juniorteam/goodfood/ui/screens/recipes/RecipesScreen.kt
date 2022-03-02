@@ -55,19 +55,18 @@ fun RecipesList(
 ) {
     Log.e("RecipesList", "RecipesList was called!")
     val context = LocalContext.current
-    recipesViewModel.getRecipesList()
+
     if (state.value.text != "") { // TODO when first launch application
-//        recipesViewModel.getRecipesList()
+        recipesViewModel.getRecipesList()
         recipesViewModel.setQuery(state.value.text)
-//        Log.e("RecipesList", "Network response!")
-//    } else {
-//        recipesViewModel.readAllData()
-//        Log.e("RecipesList", "Database response!")
-//        Toast.makeText(context, "Data from database!", Toast.LENGTH_SHORT).show()
+        Log.e("RecipesList", "Network response!")
+    } else {
+        recipesViewModel.readAllData()
+        Log.e("RecipesList", "Database response!")
+        Toast.makeText(context, "Data from database!", Toast.LENGTH_SHORT).show()
     }
 
     val recipesItems = recipesViewModel.recipesList
-
 
     if (recipesItems == null) {
         Text(

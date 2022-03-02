@@ -1,6 +1,9 @@
 package com.juniorteam.goodfood.ui.screens.ingredient_details
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.juniorteam.domain.interactor.IngredientInteractor
@@ -23,17 +26,14 @@ class IngredientDetailsViewModel @Inject constructor(
 
     private val tag = IngredientDetailsViewModel::class.java.simpleName
 
-    val ingredient = MutableLiveData<IngredientDetails>().apply {
-        value = IngredientDetails(
-            id = 2237
-        )
-    }
+    var ingredientState by mutableStateOf<IngredientDetails?>(null)
+        private set
 
     fun getIngredientById(id: String) {
         viewModelScope.launchWithLoading {
             interactor.getIngredientById(id)
                 .onSuccess {
-                    ingredient.value = it
+                    ingredientState = it
                     Log.i(tag, "ingredient = $it")
                 }
                 .onError {

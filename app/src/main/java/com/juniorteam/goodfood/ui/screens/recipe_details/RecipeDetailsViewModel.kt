@@ -1,9 +1,13 @@
 package com.juniorteam.goodfood.ui.screens.recipe_details
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.juniorteam.domain.interactor.RecipeInteractor
+import com.juniorteam.domain.model.Recipe
 import com.juniorteam.domain.model.RecipeDetails
 import com.juniorteam.domain.model.result.onError
 import com.juniorteam.domain.model.result.onSuccess
@@ -21,26 +25,14 @@ class RecipeDetailsViewModel @Inject constructor(
 
     private val tag = RecipeDetailsViewModel::class.java.simpleName
 
-    val recipe = MutableLiveData<RecipeDetails>().apply {
-        value = RecipeDetails(
-            id = 22374,
-            glutenFree = true,
-            image = "https://spoonacular.com/productImages/1.jpg",
-            readyInMinutes = 24,
-            sourceUrl = null,
-            title = "Eggs",
-            vegan = false,
-            vegetarian = true,
-            product = null,
-            winePairing = null
-        )
-    }
+    var recipeState by mutableStateOf<RecipeDetails?>(null)
+        private set
 
     fun getRecipeById(id: String) {
         viewModelScope.launchWithLoading {
             interactor.getRecipeById(id)
                 .onSuccess {
-                    recipe.value = it
+                    recipeState = it
                     Log.i(tag, "recipe = $it")
                 }
                 .onError {

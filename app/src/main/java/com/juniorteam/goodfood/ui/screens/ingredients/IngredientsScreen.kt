@@ -1,5 +1,6 @@
 package com.juniorteam.goodfood.ui.screens.ingredients
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,7 +42,11 @@ fun IngredientsScreen(ingredientsViewModel: IngredientsViewModel, externalNavGra
         SearchToolbar(state = textState, onClick = {
             Toast.makeText(context, "side bar", Toast.LENGTH_SHORT).show()
         })
-        IngredientsList(state = textState, ingredientsViewModel = ingredientsViewModel, externalNavGraph = externalNavGraph)
+        IngredientsList(
+            state = textState,
+            ingredientsViewModel = ingredientsViewModel,
+            externalNavGraph = externalNavGraph
+        )
     }
 }
 
@@ -53,12 +58,16 @@ fun IngredientsList(
     ingredientsViewModel: IngredientsViewModel,
     externalNavGraph: NavController
 ) {
-
-    ingredientsViewModel.getIngredientList()
+    Log.e("IngredientsList", "IngredientsList was called!")
     val context = LocalContext.current
 
-    if (state.value.text != "")
+    if (state.value.text != "") { // TODO when first launch application
+        ingredientsViewModel.getIngredientList()
         ingredientsViewModel.setQuery(state.value.text)
+    } else {
+        ingredientsViewModel.readAllData()
+        Toast.makeText(context, "Data from database!", Toast.LENGTH_SHORT).show()
+    }
 
     val ingredientItems = ingredientsViewModel.ingredientList
 
@@ -70,7 +79,7 @@ fun IngredientsList(
                 .wrapContentSize(Alignment.Center),
             text = "Data is empty!"
         )
-    }else {
+    } else {
         LazyColumn {
             items(ingredientItems) { item ->
                 item.let {

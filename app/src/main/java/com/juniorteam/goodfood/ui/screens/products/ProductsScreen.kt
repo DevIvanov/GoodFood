@@ -1,5 +1,6 @@
 package com.juniorteam.goodfood.ui.screens.products
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -38,7 +39,8 @@ fun ProductsScreen(productsViewModel: ProductsViewModel, externalNavGraph: NavHo
         SearchToolbar(state = textState, onClick = {
             Toast.makeText(context, "side bar", Toast.LENGTH_SHORT).show()
         })
-        ProductsList(state = textState,
+        ProductsList(
+            state = textState,
             productViewModel = productsViewModel,
             externalNavGraph = externalNavGraph
         )
@@ -46,15 +48,20 @@ fun ProductsScreen(productsViewModel: ProductsViewModel, externalNavGraph: NavHo
 }
 
 @Composable
-fun ProductsList(modifier: Modifier = Modifier, state:MutableState<TextFieldValue>,
-                 productViewModel: ProductsViewModel, externalNavGraph: NavHostController
+fun ProductsList(
+    modifier: Modifier = Modifier, state: MutableState<TextFieldValue>,
+    productViewModel: ProductsViewModel, externalNavGraph: NavHostController
 ) {
-    productViewModel.getProductList()
-
+    Log.e("ProductsList", "ProductsList was called!")
     val context = LocalContext.current
 
-    if (state.value.text != "")
+    if (state.value.text != "") { // TODO when first launch application
+        productViewModel.getProductList()
         productViewModel.setQuery(state.value.text)
+    } else {
+        productViewModel.readAllData()
+        Toast.makeText(context, "Data from database!", Toast.LENGTH_SHORT).show()
+    }
 
     val productItems = productViewModel.productList
 
@@ -66,13 +73,13 @@ fun ProductsList(modifier: Modifier = Modifier, state:MutableState<TextFieldValu
                 .wrapContentSize(Alignment.Center),
             text = "Data is empty!"
         )
-    }else {
+    } else {
         LazyColumn {
             items(productItems) { item ->
                 item.let {
                     ProductItem(
                         productData = item,
-                        onClick =  {
+                        onClick = {
                             val argument = item.id.toString()
                             externalNavGraph.navigate(
                                 Screen.ProductDetails.route,
@@ -123,3 +130,4 @@ fun ProductItem(productData: Product, onClick: () -> Unit) {
         }
     }
 }
+

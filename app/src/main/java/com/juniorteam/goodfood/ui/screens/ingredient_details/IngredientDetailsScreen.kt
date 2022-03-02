@@ -32,9 +32,8 @@ import java.lang.Exception
 
 class IngredientDetailsScreen {
     private val tag = IngredientDetailsScreen::class.java.simpleName
-    private lateinit var data: IngredientDetails
+    private var data: IngredientDetails? = null
 
-//    private val
     @Composable
     fun IngredientDetailsScreen(ingredientDetailsViewModel: IngredientDetailsViewModel, navController: NavController) {
         val context = LocalContext.current
@@ -42,37 +41,46 @@ class IngredientDetailsScreen {
         try {
             navController.previousBackStackEntry?.arguments?.getString("id")
                 ?.let { ingredientDetailsViewModel.getIngredientById(it) }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e(tag, e.message.toString())
         }
 
+        data = ingredientDetailsViewModel.ingredientState
 
-        data = ingredientDetailsViewModel.ingredient.value!!
-
-        Column {
-            Toolbar {
-                navController.navigateUp()
-            }
-
-            LazyColumn(
-                content = {
-                    item {
-                        RecipeMainImage()
-                    }
-                    item {
-                        RecipeReadyTime()
-                    }
-                    item {
-                        RecipeCharacteristic()
-                    }
-                    item {
-                        RecipeSourceLink {
-                            Toast.makeText(context, "Link open", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                },
-                modifier = Modifier.fillMaxSize()
+        if (data == null) {
+            Text(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.Center),
+                text = "Data is empty!"
             )
+        }else{
+            Column {
+                Toolbar {
+                    navController.navigateUp()
+                }
+
+                LazyColumn(
+                    content = {
+                        item {
+                            RecipeMainImage()
+                        }
+                        item {
+                            RecipeReadyTime()
+                        }
+                        item {
+                            RecipeCharacteristic()
+                        }
+                        item {
+                            RecipeSourceLink {
+                                Toast.makeText(context, "Link open", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 

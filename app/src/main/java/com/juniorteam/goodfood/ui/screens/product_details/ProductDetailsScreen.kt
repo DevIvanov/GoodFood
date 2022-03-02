@@ -29,45 +29,58 @@ import com.juniorteam.goodfood.ui.theme.Cilantro
 
 class ProductDetailsScreen {
     private val tag = ProductDetailsScreen::class.java.simpleName
-    private lateinit var data: ProductDetails
+    private var data: ProductDetails? = null
 
     @Composable
-    fun ProductDetailsScreen(productDetailsViewModel: ProductDetailsViewModel, navController: NavController) {
+    fun ProductDetailsScreen(
+        productDetailsViewModel: ProductDetailsViewModel,
+        navController: NavController
+    ) {
         val context = LocalContext.current
 
         try {
             navController.previousBackStackEntry?.arguments?.getString("id")
                 ?.let { productDetailsViewModel.getProductById(it) }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e(tag, e.message.toString())
         }
 
-        data = productDetailsViewModel.product.value!!
+        data = productDetailsViewModel.productState
 
-        Column {
-            Toolbar {
-                navController.navigateUp()
-            }
-
-            LazyColumn(
-                content = {
-                    item {
-                        RecipeMainImage()
-                    }
-                    item {
-                        RecipeReadyTime()
-                    }
-                    item {
-                        RecipeCharacteristic()
-                    }
-                    item {
-                        RecipeSourceLink {
-                            Toast.makeText(context, "Link open", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                },
-                modifier = Modifier.fillMaxSize()
+        if (data == null) {
+            Text(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.Center),
+                text = "Data is empty!"
             )
+        }else{
+            Column {
+                Toolbar {
+                    navController.navigateUp()
+                }
+
+                LazyColumn(
+                    content = {
+                        item {
+                            RecipeMainImage()
+                        }
+                        item {
+                            RecipeReadyTime()
+                        }
+                        item {
+                            RecipeCharacteristic()
+                        }
+                        item {
+                            RecipeSourceLink {
+                                Toast.makeText(context, "Link open", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 
@@ -258,5 +271,6 @@ class ProductDetailsScreen {
 //        else
 //            painterResource(id = R.drawable.ic_close_icon)
 //    }
+
 }
 
