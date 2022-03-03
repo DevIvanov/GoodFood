@@ -5,16 +5,15 @@ import com.juniorteam.data.util.safeApiCall
 import com.juniorteam.domain.model.*
 import com.juniorteam.domain.model.result.Result
 import com.juniorteam.domain.repository.SpoonRepository
+import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SpoonRepositoryImpl @Inject constructor(private val api: SpoonApi) : SpoonRepository {
 
-    val tag = SpoonRepositoryImpl::class.java.simpleName
-
-    override suspend fun getRecipesResults(query: String): Result<RecipesResponse> {
-        return safeApiCall { api.getRecipes(query = query) }
+    override suspend fun getRecipesResults(query: String): Call<RecipesResponse> {
+        return api.getRecipes(query = query)
     }
 
     override suspend fun getIngredientsResults(query: String): Result<IngredientsResponse> {

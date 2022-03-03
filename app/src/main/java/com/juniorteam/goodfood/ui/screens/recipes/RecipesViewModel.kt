@@ -20,6 +20,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import okhttp3.Headers
+import okhttp3.internal.http2.Header
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.lang.NullPointerException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,21 +43,33 @@ class RecipesViewModel @Inject constructor(
     var recipesList by mutableStateOf<List<Recipe>?>(null)
         private set
 
-    private val list = MutableSharedFlow<RecipesResponse>(replay = 1)
+    var headerLeftQuota by mutableStateOf("")
+        private set
+
 
     fun getRecipesList() {
         viewModelScope.launchWithLoading {
-            recipeInteractor.getRecipeList(query = _query.value!!)
-                .onSuccess {
-                    list.emit(it)
-                    recipesList = it.results
-                    Log.i(tag, "results = ${it.results}")
-                    insertData(recipesList!!)
+            val call = recipeInteractor.getRecipeList(query = _query.value!!)
+            call.enqueue(object : Callback<RecipesResponse> {
+                override fun onResponse(
+                    call: Call<RecipesResponse>,
+                    response: Response<RecipesResponse>
+                ) {
+                    val headers: Headers = response.headers()
+                    Log.e(tag, "header ${headers.get("x-api-quota-left")}")
+                    headerLeftQuota = headers.get("x-api-quota-left")?: ""
+                    Log.i(tag, "response.headers(): ${response.headers()}")
+                    try {
+                        recipesList = response.body()!!.results
+                    }catch (e: NullPointerException){
+                        Log.e(tag, "response.body() ${e.message}")
+                    }
                 }
-                .onError {
-                    error.emit(it)
-                    Log.e(tag, it.toString())
+
+                override fun onFailure(call: Call<RecipesResponse>, t: Throwable) {
+                    Log.e(tag, "error = ${t.message.toString()}")
                 }
+            })
         }
     }
 
@@ -89,31 +107,4 @@ class RecipesViewModel @Inject constructor(
             recipeDBInteractor.insertAll(list)
         }
     }
-
-//    private var page: Int = 1
-//    val recipesLists = MutableLiveData<List<Recipe>>()
-//    val showProgress = MutableLiveData<Boolean>()
-//    val requestError = MutableLiveData<String>()
-//
-//    fun getPhotos() {
-//        showProgress.postValue(true)
-//        CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                val call =
-//                    repository.getRecipesResults(query)
-//                if (call.isSuccessful) {
-//                    val photos = call.body()
-//                    page += 1
-//                    recipesLists.postValue(ArrayList())
-//                    recipesLists.postValue(photos!!)
-//                } else {
-//                    requestError.postValue(RequestError.getByValue(0).toString())
-//                }
-//                showProgress.postValue(false)
-//            }catch (e: Throwable) {
-//                requestError.postValue(RequestError.getByValue().toString())
-//                showProgress.postValue(false)
-//            }
-//        }
-//    }
 }

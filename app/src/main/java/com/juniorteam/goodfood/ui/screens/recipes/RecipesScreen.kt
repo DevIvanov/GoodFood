@@ -1,5 +1,6 @@
 package com.juniorteam.goodfood.ui.screens.recipes
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -8,13 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,11 +26,13 @@ import com.juniorteam.domain.model.Recipe
 import com.juniorteam.goodfood.ui.navigation.nav_objects.Screen
 import com.juniorteam.goodfood.ui.navigation.navigate_extensions.navigate
 import com.juniorteam.goodfood.ui.views.SearchToolbar
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun RecipesScreen(recipesViewModel: RecipesViewModel, externalNavGraph: NavHostController) {
     val context = LocalContext.current
+
     Column {
         val textState = remember { mutableStateOf(TextFieldValue("")) }
         SearchToolbar(state = textState, onClick = {
@@ -48,6 +46,7 @@ fun RecipesScreen(recipesViewModel: RecipesViewModel, externalNavGraph: NavHostC
     }
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun RecipesList(
     modifier: Modifier = Modifier, state: MutableState<TextFieldValue>,
@@ -55,6 +54,16 @@ fun RecipesList(
 ) {
     Log.e("RecipesList", "RecipesList was called!")
     val context = LocalContext.current
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { mutableStateOf(SnackbarHostState()) }
+
+    if (recipesViewModel.headerLeftQuota != ""){
+        scope.launch {
+            snackbarHostState.value.showSnackbar("Hello")
+        }
+    }
+//    makeText(context, "Left Quota = ${recipesViewModel.headerLeftQuota} for this key!", Toast.LENGTH_SHORT).show()
 
     if (state.value.text != "") { // TODO when first launch application
         recipesViewModel.getRecipesList()

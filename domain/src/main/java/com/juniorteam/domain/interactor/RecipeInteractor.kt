@@ -5,6 +5,7 @@ import com.juniorteam.domain.model.RecipesResponse
 import com.juniorteam.domain.model.result.Result
 import com.juniorteam.domain.use_case.GetRecipeByIdUseCase
 import com.juniorteam.domain.use_case.GetRecipeListUseCase
+import retrofit2.Call
 import javax.inject.Inject
 
 class RecipeInteractor @Inject constructor(
@@ -12,7 +13,7 @@ class RecipeInteractor @Inject constructor(
     private val getRecipeListUseCase: GetRecipeListUseCase
 ) {
 
-    suspend fun getRecipeList(query: String): Result<RecipesResponse> {
+    suspend fun getRecipeList(query: String): Call<RecipesResponse> {
         return getRecipeListUseCase.getRecipeList(query)
     }
 

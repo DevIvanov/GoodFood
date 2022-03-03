@@ -1,10 +1,15 @@
 package com.juniorteam.goodfood.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.juniorteam.goodfood.ui.navigation.SetupNavGraph
@@ -16,6 +21,7 @@ import com.juniorteam.goodfood.ui.screens.recipe_details.RecipeDetailsViewModel
 import com.juniorteam.goodfood.ui.screens.recipes.RecipesViewModel
 import com.juniorteam.goodfood.ui.theme.AnimatedSplashScreenDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
